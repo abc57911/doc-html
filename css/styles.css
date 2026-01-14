@@ -94,6 +94,7 @@ body {
   line-height: 1.6;
   color: var(--text-primary);
   background-color: var(--bg-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* ===== Bootstrap 網格系統整合 ===== */
@@ -120,6 +121,15 @@ body {
 @media (min-width: 992px) {
   .container {
     max-width: 960px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .sidebar {
+    width: 260px;
+  }
+  .content {
+    margin-left: 260px;
   }
 }
 
@@ -563,10 +573,11 @@ body {
 .nav-section-title {
   padding: 8px 20px;
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .nav-link {
@@ -600,6 +611,12 @@ body {
   background-color: var(--bg-hover);
   color: var(--text-muted);
   margin-left: 8px;
+}
+
+.nav-section-title .badge {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  padding: 4px 10px;
 }
 
 /* ===== 主內容區 ===== */
@@ -763,7 +780,7 @@ body {
 /* ===== 卡片網格 (Bootstrap 整合) ===== */
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 20px;
 }
 
@@ -817,9 +834,9 @@ body {
 }
 
 .card-type {
-  padding: 4px 10px;
-  font-size: 0.7rem;
-  font-weight: 500;
+  padding: 5px 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   border-radius: var(--radius-sm);
@@ -929,6 +946,17 @@ body {
   font-size: 0.9375rem;
   font-weight: 500;
   color: var(--text-primary);
+  margin: 0;
+}
+
+.header-desc {
+  margin: 0 16px;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .detail-meta {
@@ -947,13 +975,15 @@ body {
 }
 
 .detail-body {
-  padding: 24px;
-  display: none;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
 }
 
 .expanded .detail-body {
-  display: block;
-  animation: fadeIn 0.3s ease;
+  max-height: 2000px;
+  opacity: 1;
 }
 
 .detail-body p {
@@ -1143,7 +1173,7 @@ body {
   padding: 16px;
   font-family: var(--font-mono);
   font-size: 0.875rem;
-  line-height: 1.7;
+  line-height: 1.8;
   overflow-x: auto;
   color: #cdd3de;
 }
@@ -1602,7 +1632,7 @@ body {
   padding: 6px 14px;
   font-size: 0.8125rem;
   border-radius: var(--radius-sm);
-  border: none;
+  border: 1px solid var(--border-color);
   background-color: transparent;
   color: var(--text-secondary);
 }
@@ -1610,11 +1640,13 @@ body {
 .top-bar .filter-tab:hover {
   background-color: var(--bg-tertiary);
   color: var(--text-primary);
+  border-color: var(--border-highlight);
 }
 
 .top-bar .filter-tab.active {
   background-color: var(--accent-blue);
   color: white;
+  border-color: var(--accent-blue);
 }
 
 /* ===== 全局篩選 ===== */
@@ -1816,7 +1848,7 @@ blockquote.note {
 }
 
 .notification-success { background-color: var(--accent-green); }
-.notification-warning { background-color: var(--accent-yellow); color: #24292e; }
+.notification-warning { background-color: #fef3c7; color: #92400e; border-left: 4px solid #d97706; }
 .notification-error { background-color: var(--accent-red); }
 
 /* ===== 隱藏類別 ===== */
@@ -1985,6 +2017,7 @@ blockquote.note {
 
   .content {
     padding: 20px;
+    background-color: var(--bg-primary);
   }
 
   .section-header {

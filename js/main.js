@@ -155,6 +155,14 @@ function initFilterButtons() {
 }
 
 function filterContent(filter) {
+  // 清除篩選：重置為全部顯示
+  if (filter === 'clear') {
+    $('#searchInput').val('');
+    $('.filter-btn, .filter-tab').removeClass('active');
+    $('.filter-btn[data-filter="all"], .filter-tab[data-filter="all"]').addClass('active');
+    filter = 'all';
+  }
+
   $('.card').each(function() {
     var $card = $(this);
     var type = $card.data('type');
@@ -271,7 +279,8 @@ function initThemeToggle() {
 function updateThemeIcon(theme) {
   var $themeToggle = $('#themeToggle');
   if ($themeToggle.length > 0) {
-    $themeToggle.text(theme === 'dark' ? '☀ 淺色' : '◑ 深色');
+    $themeToggle.find('.sun-icon').toggle(theme === 'light');
+    $themeToggle.find('.moon-icon').toggle(theme === 'dark');
   }
 }
 

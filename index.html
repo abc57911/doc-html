@@ -95,7 +95,24 @@
         </div>
 
         <div class="theme-toggle">
-          <button id="themeToggle">◑ 切換主題</button>
+          <button id="themeToggle" title="切換主題">
+            <!-- Sun icon -->
+            <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <!-- Moon icon -->
+            <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
         </div>
       </div>
     </div>
@@ -1156,10 +1173,10 @@
               <h3>Notion Tools</h3>
               <span class="card-type tool" style="margin-left: 12px;">MCP</span>
             </div>
+            <p class="header-desc">與 Notion 工作區整合的工具組，用於搜尋、建立、更新頁面和資料庫。</p>
             <span class="expand-icon">▼</span>
           </div>
           <div class="detail-body">
-            <p>與 Notion 工作區整合的工具組，用於搜尋、建立、更新頁面和資料庫。</p>
             <div class="detail-grid">
               <div class="detail-card">
                 <h4>頁面操作</h4>
@@ -1200,10 +1217,10 @@
               <h3>Brave Search</h3>
               <span class="card-type tool" style="margin-left: 12px;">MCP</span>
             </div>
+            <p class="header-desc">使用 Brave 搜尋引擎進行網頁搜尋和本地商家搜尋。</p>
             <span class="expand-icon">▼</span>
           </div>
           <div class="detail-body">
-            <p>使用 Brave 搜尋引擎進行網頁搜尋和本地商家搜尋。</p>
             <div class="detail-list">
               <li>brave_web_search - 一般網頁搜尋，支援分頁和內容過濾</li>
               <li>brave_local_search - 本地商家和地點搜尋，自動 fallback 到網頁搜尋</li>
@@ -1217,10 +1234,10 @@
               <h3>MiniMax Tools</h3>
               <span class="card-type tool" style="margin-left: 12px;">MCP</span>
             </div>
+            <p class="header-desc">MiniMax 提供的額外工具，包括網頁搜尋和影像理解。</p>
             <span class="expand-icon">▼</span>
           </div>
           <div class="detail-body">
-            <p>MiniMax 提供的額外工具，包括網頁搜尋和影像理解。</p>
             <div class="detail-list">
               <li>web_search - 網頁搜尋，類似 Google 搜尋</li>
               <li>understand_image - 使用 LLM 分析和理解圖片內容</li>
@@ -1244,10 +1261,10 @@
             <div class="detail-title">
               <h3>Read</h3>
             </div>
+            <p class="header-desc">讀取檔案內容。可以指定偏移量和限制行數，適用於檢視大型檔案的特定部分。</p>
             <span class="expand-icon">▼</span>
           </div>
           <div class="detail-body">
-            <p>讀取檔案內容。可以指定偏移量和限制行數，適用於檢視大型檔案的特定部分。</p>
             <div class="detail-list">
               <li>用途：查看檔案內容、閱讀程式碼</li>
               <li>參數：file_path, limit, offset</li>
@@ -1261,10 +1278,10 @@
             <div class="detail-title">
               <h3>Write</h3>
             </div>
+            <p class="header-desc">建立新檔案或覆寫現有檔案。如果檔案已存在，必須先使用 Read 工具讀取。</p>
             <span class="expand-icon">▼</span>
           </div>
           <div class="detail-body">
-            <p>建立新檔案或覆寫現有檔案。如果檔案已存在，必須先使用 Read 工具讀取。</p>
             <div class="detail-list">
               <li>用途：建立新檔案、寫入內容</li>
               <li>參數：file_path, content</li>
@@ -1278,10 +1295,10 @@
             <div class="detail-title">
               <h3>Edit</h3>
             </div>
+            <p class="header-desc">對現有檔案進行精確的字串替換。必須確保 old_string 在檔案中唯一。</p>
             <span class="expand-icon">▼</span>
           </div>
           <div class="detail-body">
-            <p>對現有檔案進行精確的字串替換。必須確保 old_string 在檔案中唯一。</p>
             <div class="detail-list">
               <li>用途：修改程式碼、編輯內容</li>
               <li>參數：file_path, old_string, new_string</li>
@@ -1295,10 +1312,10 @@
             <div class="detail-title">
               <h3>Bash</h3>
             </div>
+            <p class="header-desc">執行 Shell 命令。可用於 Git 操作、套件管理、建置流程等。支援背景執行和超時設定。</p>
             <span class="expand-icon">▼</span>
           </div>
           <div class="detail-body">
-            <p>執行 Shell 命令。可用於 Git 操作、套件管理、建置流程等。支援背景執行和超時設定。</p>
             <div class="detail-list">
               <li>用途：執行命令、Git 操作、安裝依賴</li>
               <li>參數：command, description, timeout, run_in_background</li>
@@ -1312,10 +1329,10 @@
             <div class="detail-title">
               <h3>Glob</h3>
             </div>
+            <p class="header-desc">使用 glob 模式搜尋檔案。支援萬用字元如 `**/*.js`、`src/**/*.ts` 等。</p>
             <span class="expand-icon">▼</span>
           </div>
           <div class="detail-body">
-            <p>使用 glob 模式搜尋檔案。支援萬用字元如 `**/*.js`、`src/**/*.ts` 等。</p>
             <div class="detail-list">
               <li>用途：搜尋符合模式的檔案</li>
               <li>參數：path, pattern</li>
@@ -1329,10 +1346,10 @@
             <div class="detail-title">
               <h3>Grep</h3>
             </div>
+            <p class="header-desc">使用正規表示法搜尋檔案內容。可以限制檔案類型、顯示行號、取得計數等。</p>
             <span class="expand-icon">▼</span>
           </div>
           <div class="detail-body">
-            <p>使用正規表示法搜尋檔案內容。可以限制檔案類型、顯示行號、取得計數等。</p>
             <div class="detail-list">
               <li>用途：在程式碼中搜尋關鍵字、函式、變數</li>
               <li>參數：pattern, glob, output_mode, head_limit</li>
@@ -1346,10 +1363,10 @@
             <div class="detail-title">
               <h3>Task</h3>
             </div>
+            <p class="header-desc">派遣 subagent 執行任務。可以指定 agent 類型、超時時間、最大回合數。</p>
             <span class="expand-icon">▼</span>
           </div>
           <div class="detail-body">
-            <p>派遣 subagent 執行任務。可以指定 agent 類型、超時時間、最大回合數。</p>
             <div class="detail-list">
               <li>用途：派遣專門的 agent 處理特定任務</li>
               <li>參數：subagent_type, prompt, max_turns, model</li>
@@ -1363,10 +1380,10 @@
             <div class="detail-title">
               <h3>WebFetch</h3>
             </div>
+            <p class="header-desc">從 URL 擷取內容並使用 AI 模型處理。自動將 HTML 轉換為 Markdown。</p>
             <span class="expand-icon">▼</span>
           </div>
           <div class="detail-body">
-            <p>從 URL 擷取內容並使用 AI 模型處理。自動將 HTML 轉換為 Markdown。</p>
             <div class="detail-list">
               <li>用途：擷取網頁內容、分析文件</li>
               <li>參數：url, prompt</li>
@@ -1380,10 +1397,10 @@
             <div class="detail-title">
               <h3>WebSearch</h3>
             </div>
+            <p class="header-desc">搜尋網頁並取得結果。支援分頁、過濾、新聞搜尋等功能。</p>
             <span class="expand-icon">▼</span>
           </div>
           <div class="detail-body">
-            <p>搜尋網頁並取得結果。支援分頁、過濾、新聞搜尋等功能。</p>
             <div class="detail-list">
               <li>用途：網頁搜尋、取得最新資訊</li>
               <li>參數：query, count, offset</li>
