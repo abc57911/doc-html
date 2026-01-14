@@ -1,0 +1,1593 @@
+<!DOCTYPE html>
+<html lang="zh-TW" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude Code 完整使用指南 - Agents、Skills、Tools 總覽</title>
+
+  <!-- Bootstrap 5.3.3 CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <!-- Font Awesome 6.5.1 CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Custom Styles (must be after Bootstrap) -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <!-- 側邊導航欄 -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h1>Claude Code</h1>
+      <p>完整使用指南</p>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section" data-filter="agent">
+        <div class="nav-section-title">Agents <span class="badge">18</span></div>
+        <a class="nav-link active" data-target="development-agents">開發類 Agents</a>
+        <a class="nav-link" data-target="specialist-agents">專家類 Agents</a>
+        <a class="nav-link" data-target="analysis-agents">分析類 Agents</a>
+      </div>
+      <div class="nav-section" data-filter="skill">
+        <div class="nav-section-title">Skills <span class="badge">37</span></div>
+        <a class="nav-link" data-target="workflow-skills">工作流程 Skills</a>
+        <a class="nav-link" data-target="utility-skills">工具類 Skills</a>
+        <a class="nav-link" data-target="anthropic-agent-skills">Anthropic Agent Skills</a>
+        <a class="nav-link" data-target="claude-plugins">Claude Plugins</a>
+      </div>
+      <div class="nav-section" data-filter="tool">
+        <div class="nav-section-title">Tools <span class="badge">10+</span></div>
+        <a class="nav-link" data-target="core-tools">核心 Tools</a>
+        <a class="nav-link" data-target="mcp-tools">MCP Tools</a>
+      </div>
+      <div class="nav-section" data-filter="all">
+        <div class="nav-section-title">範例</div>
+        <a class="nav-link" data-target="workflow-examples">工作流程範例</a>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- 主內容區 -->
+  <main class="main-content">
+    <!-- 頂部工具列 -->
+    <div class="top-bar">
+      <div class="search-box">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="M21 21l-4.35-4.35"></path>
+        </svg>
+        <input type="text" id="searchInput" placeholder="搜尋 agents、skills、tools...">
+      </div>
+
+      <!-- 篩選標籤 -->
+      <div class="filter-tabs">
+        <button class="filter-tab active" data-filter="all">全部</button>
+        <button class="filter-tab" data-filter="agent">Agents</button>
+        <button class="filter-tab" data-filter="skill">Skills</button>
+        <button class="filter-tab" data-filter="tool">Tools</button>
+      </div>
+
+      <div class="top-bar-right">
+        <!-- 統計區塊 -->
+        <div class="stats-bar">
+          <span class="stat-item agents">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"></path>
+            </svg>
+            <span class="count" id="agent-count">0</span> Agents
+          </span>
+          <span class="stat-item skills">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+            </svg>
+            <span class="count" id="skill-count">0</span> Skills
+          </span>
+          <span class="stat-item tools">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+            </svg>
+            <span class="count" id="tool-count">0</span> Tools
+          </span>
+          <span class="stat-item mcp">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+            </svg>
+            <span class="count" id="mcp-count">0</span> MCP
+          </span>
+        </div>
+
+        <div class="theme-toggle">
+          <button id="themeToggle">◑ 切換主題</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 主內容包裝區域 -->
+    <div class="content">
+
+    <!-- ===== AGENTS 區域 ===== -->
+      <!-- 開發類 Agents -->
+      <section id="development-agents" class="section">
+        <div class="section-header">
+          <h2>開發類 Agents</h2>
+          <span class="count">8 個</span>
+        </div>
+        <div class="card-grid">
+          <!-- backend-developer -->
+          <div class="card" data-type="agent">
+            <div class="card-header">
+              <span class="card-title">backend-developer</span>
+              <span class="card-type agent">Agent</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                資深後端工程師，專精於可擴展 API 開發與微服務架構。專注於效能、安全性與可維護性，構建穩健的伺服器端解決方案。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">Read</span>
+                <span class="tool-tag">Write</span>
+                <span class="tool-tag">Edit</span>
+                <span class="tool-tag">Bash</span>
+                <span class="tool-tag">Glob</span>
+                <span class="tool-tag">Grep</span>
+              </div>
+            </div>
+          </div>
+          <!-- code-reviewer -->
+          <div class="card" data-type="agent">
+            <div class="card-header">
+              <span class="card-title">code-reviewer</span>
+              <span class="card-type agent">Agent</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                專家程式碼審查員，專精於程式碼品質、安全漏洞與多種語言的最佳實踐。精通靜態分析、設計模式與效能優化。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">Read</span>
+                <span class="tool-tag">Write</span>
+                <span class="tool-tag">Edit</span>
+                <span class="tool-tag">Bash</span>
+                <span class="tool-tag">Glob</span>
+                <span class="tool-tag">Grep</span>
+              </div>
+            </div>
+          </div>
+          <!-- ui-designer -->
+          <div class="card" data-type="agent">
+            <div class="card-header">
+              <span class="card-title">ui-designer</span>
+              <span class="card-type agent">Agent</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                資深 UI 設計專家，擅長創建直觀、美觀且無障礙的使用者介面。精通設計系統、互動模式和視覺層級。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">Read</span>
+                <span class="tool-tag">Write</span>
+                <span class="tool-tag">Edit</span>
+                <span class="tool-tag">Bash</span>
+                <span class="tool-tag">Glob</span>
+                <span class="tool-tag">Grep</span>
+              </div>
+            </div>
+          </div>
+          <!-- devops-engineer -->
+          <div class="card" data-type="agent">
+            <div class="card-header">
+              <span class="card-title">devops-engineer</span>
+              <span class="card-type agent">Agent</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                資深 DevOps 工程師，專精於建構和維護可擴展、自動化的基礎設施和部署流程。涵蓋整個軟體交付生命週期。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">Read</span>
+                <span class="tool-tag">Write</span>
+                <span class="tool-tag">Edit</span>
+                <span class="tool-tag">Bash</span>
+                <span class="tool-tag">Glob</span>
+                <span class="tool-tag">Grep</span>
+              </div>
+            </div>
+          </div>
+          <!-- api-designer -->
+          <div class="card" data-type="agent">
+            <div class="card-header">
+              <span class="card-title">api-designer</span>
+              <span class="card-type agent">Agent</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                API 架構專家，設計可擴展、友善的介面。創建 REST 和 GraphQL API，提供完整文件，專注於一致性、效能和開發者體驗。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">Read</span>
+                <span class="tool-tag">Write</span>
+                <span class="tool-tag">Edit</span>
+                <span class="tool-tag">Bash</span>
+                <span class="tool-tag">Glob</span>
+                <span class="tool-tag">Grep</span>
+              </div>
+            </div>
+          </div>
+          <!-- refactoring-specialist -->
+          <div class="card" data-type="agent">
+            <div class="card-header">
+              <span class="card-title">refactoring-specialist</span>
+              <span class="card-type agent">Agent</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                資深重構專家，擅長安全的程式碼轉換技術和設計模式應用。專精於改善程式碼結構、降低複雜度和提升可維護性。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">Read</span>
+                <span class="tool-tag">Write</span>
+                <span class="tool-tag">Edit</span>
+                <span class="tool-tag">Bash</span>
+                <span class="tool-tag">Glob</span>
+                <span class="tool-tag">Grep</span>
+              </div>
+            </div>
+          </div>
+          <!-- documentation-engineer -->
+          <div class="card" data-type="agent">
+            <div class="card-header">
+              <span class="card-title">documentation-engineer</span>
+              <span class="card-type agent">Agent</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                資深文件工程師，專精於技術文件系統、API 文件和開發者友善內容。精通文件即程式碼、自動化生成。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">Read</span>
+                <span class="tool-tag">Write</span>
+                <span class="tool-tag">Edit</span>
+                <span class="tool-tag">Glob</span>
+                <span class="tool-tag">Grep</span>
+                <span class="tool-tag">WebFetch</span>
+                <span class="tool-tag">WebSearch</span>
+              </div>
+            </div>
+          </div>
+          <!-- legacy-modernizer -->
+          <div class="card" data-type="agent">
+            <div class="card-header">
+              <span class="card-title">legacy-modernizer</span>
+              <span class="card-type agent">Agent</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                資深舊系統現代化專家，擅長增量遷移策略和零風險現代化。精通重構模式、技術更新，在不中斷營運的情況下將舊系統轉換為現代化架構。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">Read</span>
+                <span class="tool-tag">Write</span>
+                <span class="tool-tag">Edit</span>
+                <span class="tool-tag">Bash</span>
+                <span class="tool-tag">Glob</span>
+                <span class="tool-tag">Grep</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 專家類 Agents -->
+      <section id="specialist-agents" class="section">
+        <div class="section-header">
+          <h2>專家類 Agents</h2>
+          <span class="count">6 個</span>
+        </div>
+        <div class="card-grid">
+          <!-- debugger -->
+          <div class="card" data-type="agent">
+            <div class="card-header">
+              <span class="card-title">debugger</span>
+              <span class="card-type agent">Agent</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                專家除錯員，專精於複雜問題診斷、根因分析與系統化問題解決。精通除錯工具、技術與方法論。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">Read</span>
+                <span class="tool-tag">Write</span>
+                <span class="tool-tag">Edit</span>
+                <span class="tool-tag">Bash</span>
+                <span class="tool-tag">Glob</span>
+                <span class="tool-tag">Grep</span>
+              </div>
+            </div>
+          </div>
+          <!-- security-auditor -->
+          <div class="card" data-type="agent">
+            <div class="card-header">
+              <span class="card-title">security-auditor</span>
+              <span class="card-type agent">Agent</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                專家安全審計員，專精於全面安全評估、合規驗證與風險管理。精通安全框架、審計方法論與合規標準。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">Read</span>
+                <span class="tool-tag">Grep</span>
+                <span class="tool-tag">Glob</span>
+              </div>
+            </div>
+          </div>
+          <!-- performance-engineer -->
+          <div class="card" data-type="agent">
+            <div class="card-header">
+              <span class="card-title">performance-engineer</span>
+              <span class="card-type agent">Agent</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                資深效能工程師，專精於系統優化、瓶頸識別和可擴展性工程。精通效能測試、分析和調優。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">Read</span>
+                <span class="tool-tag">Write</span>
+                <span class="tool-tag">Edit</span>
+                <span class="tool-tag">Bash</span>
+                <span class="tool-tag">Glob</span>
+                <span class="tool-tag">Grep</span>
+              </div>
+            </div>
+          </div>
+          <!-- dependency-manager -->
+          <div class="card" data-type="agent">
+            <div class="card-header">
+              <span class="card-title">dependency-manager</span>
+              <span class="card-type agent">Agent</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                依賴管理專家，擅長套件管理、安全審計和版本衝突解決。精通依賴優化、供應鏈安全和自動化更新。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">Read</span>
+                <span class="tool-tag">Write</span>
+                <span class="tool-tag">Edit</span>
+                <span class="tool-tag">Bash</span>
+                <span class="tool-tag">Glob</span>
+                <span class="tool-tag">Grep</span>
+              </div>
+            </div>
+          </div>
+          <!-- error-detective -->
+          <div class="card" data-type="agent">
+            <div class="card-header">
+              <span class="card-title">error-detective</span>
+              <span class="card-type agent">Agent</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                錯誤偵探專家，擅長複雜錯誤模式分析、關聯和根因發現。精通分散式系統除錯、錯誤追蹤和異常檢測。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">Read</span>
+                <span class="tool-tag">Write</span>
+                <span class="tool-tag">Edit</span>
+                <span class="tool-tag">Bash</span>
+                <span class="tool-tag">Glob</span>
+                <span class="tool-tag">Grep</span>
+              </div>
+            </div>
+          </div>
+          <!-- sql-pro -->
+          <div class="card" data-type="agent">
+            <div class="card-header">
+              <span class="card-title">sql-pro</span>
+              <span class="card-type agent">Agent</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                SQL 開發專家，擅長複雜查詢優化、資料庫設計和效能調優。精通 PostgreSQL、MySQL、SQL Server 和 Oracle。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">Read</span>
+                <span class="tool-tag">Write</span>
+                <span class="tool-tag">Edit</span>
+                <span class="tool-tag">Bash</span>
+                <span class="tool-tag">Glob</span>
+                <span class="tool-tag">Grep</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 分析類 Agents -->
+      <section id="analysis-agents" class="section">
+        <div class="section-header">
+          <h2>分析類 Agents</h2>
+          <span class="count">4 個</span>
+        </div>
+        <div class="card-grid">
+          <!-- git-workflow-manager -->
+          <div class="card" data-type="agent">
+            <div class="card-header">
+              <span class="card-title">git-workflow-manager</span>
+              <span class="card-type agent">Agent</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                專家 Git 工作流程管理員，專精於分支策略、自動化與團隊協作。精通 Git 工作流程、合併衝突解決與儲存庫管理。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">Read</span>
+                <span class="tool-tag">Write</span>
+                <span class="tool-tag">Edit</span>
+                <span class="tool-tag">Bash</span>
+                <span class="tool-tag">Glob</span>
+                <span class="tool-tag">Grep</span>
+              </div>
+            </div>
+          </div>
+          <!-- research-analyst -->
+          <div class="card" data-type="agent">
+            <div class="card-header">
+              <span class="card-title">research-analyst</span>
+              <span class="card-type agent">Agent</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                資深研究分析專家，專精於全面資訊收集、綜合分析與洞察生成。擅長研究方法論、數據分析與報告創建。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">Read</span>
+                <span class="tool-tag">Grep</span>
+                <span class="tool-tag">Glob</span>
+                <span class="tool-tag">WebFetch</span>
+                <span class="tool-tag">WebSearch</span>
+              </div>
+            </div>
+          </div>
+          <!-- prompt-engineer -->
+          <div class="card" data-type="agent">
+            <div class="card-header">
+              <span class="card-title">prompt-engineer</span>
+              <span class="card-type agent">Agent</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                資深提示工程師，專精於大型語言模型的設計、優化和管理。擅長提示架構、評估框架和生產提示系統。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">Read</span>
+                <span class="tool-tag">Write</span>
+                <span class="tool-tag">Edit</span>
+                <span class="tool-tag">Bash</span>
+                <span class="tool-tag">Glob</span>
+                <span class="tool-tag">Grep</span>
+              </div>
+            </div>
+          </div>
+          <!-- dx-optimizer -->
+          <div class="card" data-type="agent">
+            <div class="card-header">
+              <span class="card-title">dx-optimizer</span>
+              <span class="card-type agent">Agent</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                資深開發者體驗優化師，專精於建置效能、工具效率和工作流自動化。擅長開發環境優化，專注於減少摩擦、加速反饋循環。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">Read</span>
+                <span class="tool-tag">Write</span>
+                <span class="tool-tag">Edit</span>
+                <span class="tool-tag">Bash</span>
+                <span class="tool-tag">Glob</span>
+                <span class="tool-tag">Grep</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== SKILLS 區域 ===== -->
+      <!-- 工作流程 Skills -->
+      <section id="workflow-skills" class="section">
+        <div class="section-header">
+          <h2>工作流程 Skills</h2>
+          <span class="count">6 個</span>
+        </div>
+        <div class="card-grid">
+          <!-- writing-plans -->
+          <div class="card" data-type="skill">
+            <div class="card-header">
+              <span class="card-title">writing-plans</span>
+              <span class="card-type skill">Skill</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                當你有規格或需求，但尚未觸及程式碼時，使用此 skill 來撰寫全面的實作計畫。必須在專用的 worktree 中執行。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">writing</span>
+                <span class="tool-tag">planning</span>
+              </div>
+            </div>
+          </div>
+          <!-- executing-plans -->
+          <div class="card" data-type="skill">
+            <div class="card-header">
+              <span class="card-title">executing-plans</span>
+              <span class="card-type skill">Skill</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                當已有現成的實作計畫時使用，在獨立 session 中執行並設置審查 checkpoint。核心原則是「批次執行搭配架構審查」。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">execution</span>
+                <span class="tool-tag">checkpoints</span>
+              </div>
+            </div>
+          </div>
+          <!-- subagent-driven-development -->
+          <div class="card" data-type="skill">
+            <div class="card-header">
+              <span class="card-title">subagent-driven-development</span>
+              <span class="card-type skill">Skill</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                透過分派獨立的子代理來執行實作計畫，每個任務後進行兩階段審查：先檢查規格符合度，再檢查程式碼品質。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">subagent</span>
+                <span class="tool-tag">review</span>
+              </div>
+            </div>
+          </div>
+          <!-- finishing-a-development-branch -->
+          <div class="card" data-type="skill">
+            <div class="card-header">
+              <span class="card-title">finishing-a-development-branch</span>
+              <span class="card-type skill">Skill</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                當實作完成、測試通過後，用於指導完成開發工作的流程。提供 Merge、PR、保持現狀、丟棄四個選項。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">git</span>
+                <span class="tool-tag">workflow</span>
+              </div>
+            </div>
+          </div>
+          <!-- test-driven-development -->
+          <div class="card" data-type="skill">
+            <div class="card-header">
+              <span class="card-title">test-driven-development</span>
+              <span class="card-type skill">Skill</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                實作任何功能或錯誤修正前，先撰寫測試。看著它失敗，然後寫最少量的程式碼讓它通過。核心原則：Red-Green-Refactor。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">testing</span>
+                <span class="tool-tag">TDD</span>
+              </div>
+            </div>
+          </div>
+          <!-- planning-with-files -->
+          <div class="card" data-type="skill">
+            <div class="card-header">
+              <span class="card-title">planning-with-files</span>
+              <span class="card-type skill">Skill</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                使用 Manus 風格的持久化 Markdown 檔案進行規劃、進度追蹤和知識儲存。適用於複雜任務、多步驟專案。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">files</span>
+                <span class="tool-tag">tracking</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 工具類 Skills -->
+      <section id="utility-skills" class="section">
+        <div class="section-header">
+          <h2>工具類 Skills</h2>
+          <span class="count">6 個</span>
+        </div>
+        <div class="card-grid">
+          <!-- requesting-code-review -->
+          <div class="card" data-type="skill">
+            <div class="card-header">
+              <span class="card-title">requesting-code-review</span>
+              <span class="card-type skill">Skill</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                在完成任務、實作主要功能或合併前，派遣 code-reviewer subagent 進行程式碼審查，catch 問題避免擴大。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">review</span>
+                <span class="tool-tag">quality</span>
+              </div>
+            </div>
+          </div>
+          <!-- notion-spec-to-implementation -->
+          <div class="card" data-type="skill">
+            <div class="card-header">
+              <span class="card-title">notion-spec-to-implementation</span>
+              <span class="card-type skill">Skill</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                將產品或技術規格轉換為可執行的 Notion 任務清單。從規格文件中提取需求、分解為詳細實作計劃。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">notion</span>
+                <span class="tool-tag">planning</span>
+              </div>
+            </div>
+          </div>
+          <!-- changelog-generator -->
+          <div class="card" data-type="skill">
+            <div class="card-header">
+              <span class="card-title">changelog-generator</span>
+              <span class="card-type skill">Skill</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                自動從 git commit 產生面向用戶的 changelog。分析 commit 歷史、分類變更、將技術性 commit 轉換為清晰的發布說明。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">git</span>
+                <span class="tool-tag">documentation</span>
+              </div>
+            </div>
+          </div>
+          <!-- pdf-generator -->
+          <div class="card" data-type="skill">
+            <div class="card-header">
+              <span class="card-title">pdf-generator</span>
+              <span class="card-type skill">Skill</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                通用的 PDF 文件產生器，支援專業表格樣式、內部連結和自訂模板。用於建立目錄、文件、報告等結構化 PDF 文件。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">pdf</span>
+                <span class="tool-tag">generation</span>
+              </div>
+            </div>
+          </div>
+          <!-- agent-browser -->
+          <div class="card" data-type="skill">
+            <div class="card-header">
+              <span class="card-title">agent-browser</span>
+              <span class="card-type skill">Skill</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                自動化瀏覽器互動，用於網頁測試、表單填寫、截圖和資料萃取。支援導航、點擊、輸入、等待等互動操作。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">browser</span>
+                <span class="tool-tag">automation</span>
+              </div>
+            </div>
+          </div>
+          <!-- thinkphp-expert -->
+          <div class="card" data-type="skill">
+            <div class="card-header">
+              <span class="card-title">thinkphp-expert</span>
+              <span class="card-type skill">Skill</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                全域 ThinkPHP（TP3/TP5）專案輔助技能，適用於舊專案維護與保守修改。專門處理 ThinkPHP 框架相關問題。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">thinkphp</span>
+                <span class="tool-tag">legacy</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Anthropic Agent Skills -->
+      <section id="anthropic-agent-skills" class="section">
+        <div class="section-header">
+          <h2>Anthropic Agent Skills</h2>
+          <span class="count">16 個</span>
+        </div>
+        <p style="color: var(--text-secondary); margin-bottom: 24px;">
+          來自 anthropic-agent-skills 插件市場的專業技能，提供文件處理、視覺設計、生成藝術等功能。
+        </p>
+        <div class="card-grid">
+          <!-- algorithmic-art -->
+          <div class="card" data-type="skill">
+            <div class="card-header">
+              <span class="card-title">algorithmic-art</span>
+              <span class="card-type skill">Skill</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                使用 p5.js 建立演算法藝術，支援種子隨機性和互動式參數探索。創原創生成藝術而非複製現有作品。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">p5.js</span>
+                <span class="tool-tag">generative</span>
+                <span class="tool-tag">creative</span>
+              </div>
+            </div>
+          </div>
+          <!-- brand-guidelines -->
+          <div class="card" data-type="skill">
+            <div class="card-header">
+              <span class="card-title">brand-guidelines</span>
+              <span class="card-type skill">Skill</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                應用 Anthropic 官方品牌色彩和版面設計指南。確保所有工件符合品牌視覺標準。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">branding</span>
+                <span class="tool-tag">design</span>
+                <span class="tool-tag">Anthropic</span>
+              </div>
+            </div>
+          </div>
+          <!-- canvas-design -->
+          <div class="card" data-type="skill">
+            <div class="card-header">
+              <span class="card-title">canvas-design</span>
+              <span class="card-type skill">Skill</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                使用 canvas 和 PDF 建立美麗的視覺設計、海報和藝術作品。支援設計原理和創意表達。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">canvas</span>
+                <span class="tool-tag">design</span>
+                <span class="tool-tag">visual</span>
+              </div>
+            </div>
+          </div>
+          <!-- doc-coauthoring -->
+          <div class="card" data-type="skill">
+            <div class="card-header">
+              <span class="card-title">doc-coauthoring</span>
+              <span class="card-type skill">Skill</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                結構化協作寫作流程指南。適用於文件、提案、技術規格的共同創作。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">writing</span>
+                <span class="tool-tag">collaboration</span>
+                <span class="tool-tag">documentation</span>
+              </div>
+            </div>
+          </div>
+          <!-- docx -->
+          <div class="card" data-type="skill">
+            <div class="card-header">
+              <span class="card-title">docx</span>
+              <span class="card-type skill">Skill</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                Word 文件完整處理工具，支援建立、編輯、分析。包含追蹤修訂、評論、格式保留和文字萃取。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">Word</span>
+                <span class="tool-tag">document</span>
+                <span class="tool-tag">OOXML</span>
+              </div>
+            </div>
+          </div>
+          <!-- frontend-design -->
+          <div class="card" data-type="skill">
+            <div class="card-header">
+              <span class="card-title">frontend-design</span>
+              <span class="card-type skill">Skill</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                建立獨特、生產級的前端介面。避免通用 AI 美學，注重創意和精緻的視覺設計。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">frontend</span>
+                <span class="tool-tag">UI</span>
+                <span class="tool-tag">React</span>
+              </div>
+            </div>
+          </div>
+          <!-- internal-comms -->
+          <div class="card" data-type="skill">
+            <div class="card-header">
+              <span class="card-title">internal-comms</span>
+              <span class="card-type skill">Skill</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                內部溝通文件撰寫工具包。適用於狀態報告、領導更新、3P 更新、公司新聞稿、FAQ、事故報告等。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">communication</span>
+                <span class="tool-tag">documentation</span>
+                <span class="tool-tag">internal</span>
+              </div>
+            </div>
+          </div>
+          <!-- Anthropic Agent Skills -->
+          <div class="card" data-type="skill">
+            <div class="card-header">
+              <span class="card-title">mcp-builder</span>
+              <span class="card-type skill">Skill</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                建立高質量 MCP（Model Context Protocol）伺服器的指南。支援 Python FastMCP 和 TypeScript MCP SDK。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">MCP</span>
+                <span class="tool-tag">server</span>
+                <span class="tool-tag">integration</span>
+              </div>
+            </div>
+          </div>
+          <div class="card" data-type="skill">
+            <div class="card-header">
+              <span class="card-title">pdf</span>
+              <span class="card-type skill">Skill</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                完整的 PDF 操作工具包。支援萃取文字和表格、建立新 PDF、合併/拆分文件、處理表單。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">PDF</span>
+                <span class="tool-tag">document</span>
+                <span class="tool-tag">pypdf</span>
+              </div>
+            </div>
+          </div>
+          <div class="card" data-type="skill">
+            <div class="card-header">
+              <span class="card-title">pptx</span>
+              <span class="card-type skill">Skill</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                PowerPoint 簡報創建、編輯和分析工具。支援版面設計、備註、評論和投影片管理。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">PowerPoint</span>
+                <span class="tool-tag">presentation</span>
+                <span class="tool-tag">slides</span>
+              </div>
+            </div>
+          </div>
+          <div class="card" data-type="skill">
+            <div class="card-header">
+              <span class="card-title">skill-creator</span>
+              <span class="card-type skill">Skill</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                創建新 Skills 的完整指南。包含技能結構、資源組織、封裝和分發流程。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">skill</span>
+                <span class="tool-tag">creation</span>
+                <span class="tool-tag">plugin</span>
+              </div>
+            </div>
+          </div>
+          <div class="card" data-type="skill">
+            <div class="card-header">
+              <span class="card-title">slack-gif-creator</span>
+              <span class="card-type skill">Skill</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                為 Slack 優化的動畫 GIF 創建工具包。提供約束條件、驗證工具和動畫概念。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">Slack</span>
+                <span class="tool-tag">GIF</span>
+                <span class="tool-tag">animation</span>
+              </div>
+            </div>
+          </div>
+          <div class="card" data-type="skill">
+            <div class="card-header">
+              <span class="card-title">theme-factory</span>
+              <span class="card-type skill">Skill</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                為各種工件（投影片、文件、報告、HTML 登入頁）應用預設主題的工具包。包含 10 種預設主題。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">theme</span>
+                <span class="tool-tag">styling</span>
+                <span class="tool-tag">design</span>
+              </div>
+            </div>
+          </div>
+          <div class="card" data-type="skill">
+            <div class="card-header">
+              <span class="card-title">webapp-testing</span>
+              <span class="card-type skill">Skill</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                使用 Playwright 測試本地 Web 應用程式。支援前端功能驗證、UI 行為調試、截圖和瀏覽器日誌查看。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">Playwright</span>
+                <span class="tool-tag">testing</span>
+                <span class="tool-tag">browser</span>
+              </div>
+            </div>
+          </div>
+          <div class="card" data-type="skill">
+            <div class="card-header">
+              <span class="card-title">web-artifacts-builder</span>
+              <span class="card-type skill">Skill</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                使用 React、Tailwind CSS、shadcn/ui 構建複雜的 Claude.ai HTML 工件。支援狀態管理、路由和元件化。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">React</span>
+                <span class="tool-tag">Tailwind</span>
+                <span class="tool-tag">shadcn/ui</span>
+              </div>
+            </div>
+          </div>
+          <div class="card" data-type="skill">
+            <div class="card-header">
+              <span class="card-title">xlsx</span>
+              <span class="card-type skill">Skill</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                Excel 試算表創建、編輯和分析工具。支援公式、格式化、數據分析和視覺化。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">Excel</span>
+                <span class="tool-tag">spreadsheet</span>
+                <span class="tool-tag">openpyxl</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Claude Plugins Official -->
+      <section id="claude-plugins" class="section">
+        <div class="section-header">
+          <h2>Claude Plugins Official</h2>
+          <span class="count">9 個</span>
+        </div>
+        <p style="color: var(--text-secondary); margin-bottom: 24px;">
+          來自 claude-plugins-official 插件市場的開發工具，增強代碼審查、版本控制、功能開發等能力。
+        </p>
+        <div class="card-grid">
+          <!-- agent-sdk-dev -->
+          <div class="card" data-type="skill">
+            <div class="card-header">
+              <span class="card-title">agent-sdk-dev</span>
+              <span class="card-type skill">Skill</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                Claude Agent SDK 應用程式開發工具包。驗證應用程式配置是否符合 SDK 最佳實踐。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">Agent SDK</span>
+                <span class="tool-tag">development</span>
+                <span class="tool-tag">TypeScript</span>
+              </div>
+            </div>
+          </div>
+          <!-- Claude Plugins -->
+          <div class="card" data-type="skill">
+            <div class="card-header">
+              <span class="card-title">code-review</span>
+              <span class="card-type skill">Skill</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                專業代碼審查工具。分析代碼品質、找出潛在問題並提供改進建議。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">review</span>
+                <span class="tool-tag">quality</span>
+                <span class="tool-tag">analysis</span>
+              </div>
+            </div>
+          </div>
+          <div class="card" data-type="skill">
+            <div class="card-header">
+              <span class="card-title">code-simplifier</span>
+              <span class="card-type skill">Skill</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                代碼簡化工具。幫助重構和簡化複雜的程式碼，提高可讀性和可維護性。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">refactor</span>
+                <span class="tool-tag">simplify</span>
+                <span class="tool-tag">clean-code</span>
+              </div>
+            </div>
+          </div>
+          <div class="card" data-type="skill">
+            <div class="card-header">
+              <span class="card-title">commit-commands</span>
+              <span class="card-type skill">Skill</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                Git 提交命令工具。支援提交、推送和建立 PR 的流程。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">git</span>
+                <span class="tool-tag">commit</span>
+                <span class="tool-tag">PR</span>
+              </div>
+            </div>
+          </div>
+          <div class="card" data-type="skill">
+            <div class="card-header">
+              <span class="card-title">feature-dev</span>
+              <span class="card-type skill">Skill</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                功能開發工作流工具。引導從功能規格到完整實作的開發過程。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">feature</span>
+                <span class="tool-tag">development</span>
+                <span class="tool-tag">workflow</span>
+              </div>
+            </div>
+          </div>
+          <div class="card" data-type="skill">
+            <div class="card-header">
+              <span class="card-title">hookify</span>
+              <span class="card-type skill">Skill</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                Git Hooks 管理工具。幫助設置和管理各種 Git 鉤子以改進開發流程。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">git</span>
+                <span class="tool-tag">hooks</span>
+                <span class="tool-tag">automation</span>
+              </div>
+            </div>
+          </div>
+          <div class="card" data-type="skill">
+            <div class="card-header">
+              <span class="card-title">plugin-dev</span>
+              <span class="card-type skill">Skill</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                Claude Plugins 開發工具。幫助創建和管理官方插件市場的插件。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">plugin</span>
+                <span class="tool-tag">development</span>
+                <span class="tool-tag">marketplace</span>
+              </div>
+            </div>
+          </div>
+          <div class="card" data-type="skill">
+            <div class="card-header">
+              <span class="card-title">pr-review-toolkit</span>
+              <span class="card-type skill">Skill</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                PR 審查工具包。提供完整的程式碼審查流程，包括錯誤處理、測試覆蓋分析和最佳實踐檢查。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">PR</span>
+                <span class="tool-tag">review</span>
+                <span class="tool-tag">toolkit</span>
+              </div>
+            </div>
+          </div>
+          <div class="card" data-type="skill">
+            <div class="card-header">
+              <span class="card-title">security-guidance</span>
+              <span class="card-type skill">Skill</span>
+            </div>
+            <div class="card-body">
+              <p class="card-description">
+                安全指南工具。提供安全最佳實踐和指導，幫助識別和防範安全風險。
+              </p>
+              <div class="card-tools">
+                <span class="tool-tag">security</span>
+                <span class="tool-tag">guidance</span>
+                <span class="tool-tag">best-practices</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MCP Tools -->
+      <section id="mcp-tools" class="section">
+        <div class="section-header">
+          <h2>MCP Tools</h2>
+          <span class="count">3 個服務</span>
+        </div>
+        <p style="color: var(--text-secondary); margin-bottom: 24px;">
+          MCP (Model Context Protocol) Tools 是透過 MCP 伺服器提供的額外工具，擴展 Claude Code 的能力。
+        </p>
+
+        <div class="detail-section" data-type="tool">
+          <div class="detail-header">
+            <div class="detail-title">
+              <h3>Notion Tools</h3>
+              <span class="card-type tool" style="margin-left: 12px;">MCP</span>
+            </div>
+            <span class="expand-icon">▼</span>
+          </div>
+          <div class="detail-body">
+            <p>與 Notion 工作區整合的工具組，用於搜尋、建立、更新頁面和資料庫。</p>
+            <div class="detail-grid">
+              <div class="detail-card">
+                <h4>頁面操作</h4>
+                <div class="detail-list">
+                  <li>notion-search - 搜尋頁面和資料庫</li>
+                  <li>notion-fetch - 擷取頁面/資料庫內容</li>
+                  <li>notion-create-pages - 建立新頁面</li>
+                  <li>notion-update-page - 更新頁面內容</li>
+                  <li>notion-move-pages - 移動頁面</li>
+                  <li>notion-duplicate-page - 複製頁面</li>
+                </div>
+              </div>
+              <div class="detail-card">
+                <h4>資料庫操作</h4>
+                <div class="detail-list">
+                  <li>notion-create-database - 建立資料庫</li>
+                  <li>notion-update-database - 更新資料庫</li>
+                  <li>notion-create-database-row - 新增資料列</li>
+                  <li>notion-database-query - 查詢資料庫</li>
+                </div>
+              </div>
+              <div class="detail-card">
+                <h4>協作工具</h4>
+                <div class="detail-list">
+                  <li>notion-get-users - 取得用戶列表</li>
+                  <li>notion-get-teams - 取得團隊列表</li>
+                  <li>notion-create-comment - 新增評論</li>
+                  <li>notion-get-comments - 取得評論</li>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-section" data-type="tool">
+          <div class="detail-header">
+            <div class="detail-title">
+              <h3>Brave Search</h3>
+              <span class="card-type tool" style="margin-left: 12px;">MCP</span>
+            </div>
+            <span class="expand-icon">▼</span>
+          </div>
+          <div class="detail-body">
+            <p>使用 Brave 搜尋引擎進行網頁搜尋和本地商家搜尋。</p>
+            <div class="detail-list">
+              <li>brave_web_search - 一般網頁搜尋，支援分頁和內容過濾</li>
+              <li>brave_local_search - 本地商家和地點搜尋，自動 fallback 到網頁搜尋</li>
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-section" data-type="tool">
+          <div class="detail-header">
+            <div class="detail-title">
+              <h3>MiniMax Tools</h3>
+              <span class="card-type tool" style="margin-left: 12px;">MCP</span>
+            </div>
+            <span class="expand-icon">▼</span>
+          </div>
+          <div class="detail-body">
+            <p>MiniMax 提供的額外工具，包括網頁搜尋和影像理解。</p>
+            <div class="detail-list">
+              <li>web_search - 網頁搜尋，類似 Google 搜尋</li>
+              <li>understand_image - 使用 LLM 分析和理解圖片內容</li>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 核心 Tools -->
+      <section id="core-tools" class="section">
+        <div class="section-header">
+          <h2>核心 Tools</h2>
+          <span class="count">9 個</span>
+        </div>
+        <p style="color: var(--text-secondary); margin-bottom: 24px;">
+          核心 Tools 是所有 agents 都可以使用的基本工具，用於檔案操作、命令執行和程式碼搜尋。
+        </p>
+
+        <div class="detail-section" data-type="tool">
+          <div class="detail-header">
+            <div class="detail-title">
+              <h3>Read</h3>
+            </div>
+            <span class="expand-icon">▼</span>
+          </div>
+          <div class="detail-body">
+            <p>讀取檔案內容。可以指定偏移量和限制行數，適用於檢視大型檔案的特定部分。</p>
+            <div class="detail-list">
+              <li>用途：查看檔案內容、閱讀程式碼</li>
+              <li>參數：file_path, limit, offset</li>
+              <li>範例：讀取前 100 行 `Read file_path: "/path/to/file" limit: 100`</li>
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-section" data-type="tool">
+          <div class="detail-header">
+            <div class="detail-title">
+              <h3>Write</h3>
+            </div>
+            <span class="expand-icon">▼</span>
+          </div>
+          <div class="detail-body">
+            <p>建立新檔案或覆寫現有檔案。如果檔案已存在，必須先使用 Read 工具讀取。</p>
+            <div class="detail-list">
+              <li>用途：建立新檔案、寫入內容</li>
+              <li>參數：file_path, content</li>
+              <li>範例：`Write file_path: "/new/file.txt" content: "Hello World"`</li>
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-section" data-type="tool">
+          <div class="detail-header">
+            <div class="detail-title">
+              <h3>Edit</h3>
+            </div>
+            <span class="expand-icon">▼</span>
+          </div>
+          <div class="detail-body">
+            <p>對現有檔案進行精確的字串替換。必須確保 old_string 在檔案中唯一。</p>
+            <div class="detail-list">
+              <li>用途：修改程式碼、編輯內容</li>
+              <li>參數：file_path, old_string, new_string</li>
+              <li>範例：`Edit file_path: "/file.js" old_string: "old text" new_string: "new text"`</li>
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-section" data-type="tool">
+          <div class="detail-header">
+            <div class="detail-title">
+              <h3>Bash</h3>
+            </div>
+            <span class="expand-icon">▼</span>
+          </div>
+          <div class="detail-body">
+            <p>執行 Shell 命令。可用於 Git 操作、套件管理、建置流程等。支援背景執行和超時設定。</p>
+            <div class="detail-list">
+              <li>用途：執行命令、Git 操作、安裝依賴</li>
+              <li>參數：command, description, timeout, run_in_background</li>
+              <li>範例：`Bash command: "npm install" description: "Install npm packages"`</li>
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-section" data-type="tool">
+          <div class="detail-header">
+            <div class="detail-title">
+              <h3>Glob</h3>
+            </div>
+            <span class="expand-icon">▼</span>
+          </div>
+          <div class="detail-body">
+            <p>使用 glob 模式搜尋檔案。支援萬用字元如 `**/*.js`、`src/**/*.ts` 等。</p>
+            <div class="detail-list">
+              <li>用途：搜尋符合模式的檔案</li>
+              <li>參數：path, pattern</li>
+              <li>範例：`Glob pattern: "**/*.test.js"`</li>
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-section" data-type="tool">
+          <div class="detail-header">
+            <div class="detail-title">
+              <h3>Grep</h3>
+            </div>
+            <span class="expand-icon">▼</span>
+          </div>
+          <div class="detail-body">
+            <p>使用正規表示法搜尋檔案內容。可以限制檔案類型、顯示行號、取得計數等。</p>
+            <div class="detail-list">
+              <li>用途：在程式碼中搜尋關鍵字、函式、變數</li>
+              <li>參數：pattern, glob, output_mode, head_limit</li>
+              <li>範例：`Grep pattern: "function.*test" glob: "**/*.js"`</li>
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-section" data-type="tool">
+          <div class="detail-header">
+            <div class="detail-title">
+              <h3>Task</h3>
+            </div>
+            <span class="expand-icon">▼</span>
+          </div>
+          <div class="detail-body">
+            <p>派遣 subagent 執行任務。可以指定 agent 類型、超時時間、最大回合數。</p>
+            <div class="detail-list">
+              <li>用途：派遣專門的 agent 處理特定任務</li>
+              <li>參數：subagent_type, prompt, max_turns, model</li>
+              <li>範例：`Task subagent_type: "code-reviewer" prompt: "Review this PR..."`</li>
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-section" data-type="tool">
+          <div class="detail-header">
+            <div class="detail-title">
+              <h3>WebFetch</h3>
+            </div>
+            <span class="expand-icon">▼</span>
+          </div>
+          <div class="detail-body">
+            <p>從 URL 擷取內容並使用 AI 模型處理。自動將 HTML 轉換為 Markdown。</p>
+            <div class="detail-list">
+              <li>用途：擷取網頁內容、分析文件</li>
+              <li>參數：url, prompt</li>
+              <li>範例：`WebFetch url: "https://example.com" prompt: "Extract main content"`</li>
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-section" data-type="tool">
+          <div class="detail-header">
+            <div class="detail-title">
+              <h3>WebSearch</h3>
+            </div>
+            <span class="expand-icon">▼</span>
+          </div>
+          <div class="detail-body">
+            <p>搜尋網頁並取得結果。支援分頁、過濾、新聞搜尋等功能。</p>
+            <div class="detail-list">
+              <li>用途：網頁搜尋、取得最新資訊</li>
+              <li>參數：query, count, offset</li>
+              <li>範例：`WebSearch query: "latest React documentation 2024" count: 10`</li>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 工作流程範例 ===== -->
+      <section id="workflow-examples" class="section" data-filter="all">
+        <div class="section-header">
+          <h2>工作流程範例</h2>
+        </div>
+
+        <div class="workflow-diagram">
+          <h3 style="margin-bottom: 20px; color: var(--text-primary);">完整開發流程</h3>
+          <div class="workflow-steps">
+            <div class="workflow-step">
+              <div class="icon">📝</div>
+              <div class="label">writing-plans</div>
+            </div>
+            <div class="workflow-arrow">→</div>
+            <div class="workflow-step">
+              <div class="icon">⚡</div>
+              <div class="label">executing-plans</div>
+            </div>
+            <div class="workflow-arrow">→</div>
+            <div class="workflow-step">
+              <div class="icon">🔍</div>
+              <div class="label">requesting-code-review</div>
+            </div>
+            <div class="workflow-arrow">→</div>
+            <div class="workflow-step">
+              <div class="icon">✅</div>
+              <div class="label">finishing-a-development-branch</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="workflow-diagram" style="margin-top: 24px;">
+          <h3 style="margin-bottom: 20px; color: var(--text-primary);">子代理開發流程</h3>
+          <div class="workflow-steps">
+            <div class="workflow-step">
+              <div class="icon">📝</div>
+              <div class="label">writing-plans</div>
+            </div>
+            <div class="workflow-arrow">→</div>
+            <div class="workflow-step">
+              <div class="icon">🤖</div>
+              <div class="label">subagent-driven-development</div>
+            </div>
+            <div class="workflow-arrow">→</div>
+            <div class="workflow-step">
+              <div class="icon">🔍</div>
+              <div class="label">spec reviewer</div>
+            </div>
+            <div class="workflow-arrow">→</div>
+            <div class="workflow-step">
+              <div class="icon">🔍</div>
+              <div class="label">code quality reviewer</div>
+            </div>
+            <div class="workflow-arrow">→</div>
+            <div class="workflow-step">
+              <div class="icon">✅</div>
+              <div class="label">finishing</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="workflow-diagram" style="margin-top: 24px;">
+          <h3 style="margin-bottom: 20px; color: var(--text-primary);">TDD 開發流程</h3>
+          <div class="workflow-steps">
+            <div class="workflow-step">
+              <div class="icon">🔴</div>
+              <div class="label">RED</div>
+            </div>
+            <div class="workflow-arrow">→</div>
+            <div class="workflow-step">
+              <div class="icon">🟢</div>
+              <div class="label">GREEN</div>
+            </div>
+            <div class="workflow-arrow">→</div>
+            <div class="workflow-step">
+              <div class="icon">🔄</div>
+              <div class="label">REFACTOR</div>
+            </div>
+            <div class="workflow-arrow">→</div>
+            <div class="workflow-step">
+              <div class="icon">🔄</div>
+              <div class="label">Repeat</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 表格總覽 ===== -->
+      <section id="agents-table" class="section" data-filter="all">
+        <div class="section-header">
+          <h2>Agents 對照表</h2>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Agent 名稱</th>
+              <th>描述</th>
+              <th>關聯 Skills</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>backend-developer</td><td>後端開發、API 設計、微服務</td><td>feature-dev, code-review</td></tr>
+            <tr><td>code-reviewer</td><td>程式碼審查、安全漏洞檢測</td><td>requesting-code-review, pr-review-toolkit, security-guidance</td></tr>
+            <tr><td>debugger</td><td>問題診斷、根因分析</td><td>error-detective, code-review</td></tr>
+            <tr><td>security-auditor</td><td>安全評估、合規驗證</td><td>security-guidance, code-review</td></tr>
+            <tr><td>git-workflow-manager</td><td>Git 工作流程、分支策略</td><td>commit-commands, hookify, finishing-a-development-branch</td></tr>
+            <tr><td>ui-designer</td><td>UI 設計、視覺設計</td><td>frontend-design, canvas-design, theme-factory</td></tr>
+            <tr><td>devops-engineer</td><td>DevOps、CI/CD、監控</td><td>hookify, feature-dev</td></tr>
+            <tr><td>performance-engineer</td><td>效能優化、負載測試</td><td>code-review, webapp-testing</td></tr>
+            <tr><td>refactoring-specialist</td><td>重構、程式碼品質改善</td><td>code-simplifier, code-review</td></tr>
+            <tr><td>documentation-engineer</td><td>技術文件、API 文件</td><td>pdf-generator, changelog-generator, pdf</td></tr>
+            <tr><td>legacy-modernizer</td><td>舊系統現代化遷移</td><td>thinkphp-expert, refactoring-specialist</td></tr>
+            <tr><td>api-designer</td><td>API 架構設計</td><td>backend-developer, documentation-engineer</td></tr>
+            <tr><td>dependency-manager</td><td>依賴管理、安全掃描</td><td>security-guidance, code-review</td></tr>
+            <tr><td>error-detective</td><td>錯誤模式分析、根因發現</td><td>debugger, code-review</td></tr>
+            <tr><td>sql-pro</td><td>SQL 開發、資料庫優化</td><td>backend-developer, documentation-engineer</td></tr>
+            <tr><td>research-analyst</td><td>研究分析、資訊收集</td><td>agent-browser, webapp-testing</td></tr>
+            <tr><td>prompt-engineer</td><td>Prompt 工程、LLM 優化</td><td>skill-creator, test-driven-development</td></tr>
+            <tr><td>dx-optimizer</td><td>開發者體驗優化</td><td>frontend-design, webapp-testing</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="skills-table" class="section" data-filter="all">
+        <div class="section-header">
+          <h2>Skills 對照表</h2>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Skill 名稱</th>
+              <th>描述</th>
+              <th>關聯 Skills</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>writing-plans</td><td>撰寫實作計劃</td><td>executing-plans, subagent-driven-development</td></tr>
+            <tr><td>executing-plans</td><td>執行已寫好的實作計劃</td><td>finishing-a-development-branch</td></tr>
+            <tr><td>subagent-driven-development</td><td>子代理開發</td><td>test-driven-development, finishing-a-development-branch</td></tr>
+            <tr><td>finishing-a-development-branch</td><td>完成開發分支工作流程</td><td>-</td></tr>
+            <tr><td>test-driven-development</td><td>TDD 開發方法</td><td>subagent-driven-development</td></tr>
+            <tr><td>planning-with-files</td><td>Markdown 檔案規劃</td><td>notion-spec-to-implementation, requesting-code-review</td></tr>
+            <tr><td>requesting-code-review</td><td>程式碼審查</td><td>planning-with-files, subagent-driven-development</td></tr>
+            <tr><td>notion-spec-to-implementation</td><td>Notion 規格轉實作</td><td>planning-with-files, requesting-code-review</td></tr>
+            <tr><td>changelog-generator</td><td>自動產生 changelog</td><td>pdf-generator</td></tr>
+            <tr><td>pdf-generator</td><td>PDF 文件產生器</td><td>changelog-generator</td></tr>
+            <tr><td>agent-browser</td><td>瀏覽器自動化</td><td>requesting-code-review</td></tr>
+            <tr><td>thinkphp-expert</td><td>ThinkPHP 專案輔助</td><td>-</td></tr>
+            <!-- Anthropic Agent Skills -->
+            <tr><td>algorithmic-art</td><td>使用 p5.js 建立演算法藝術</td><td>canvas-design</td></tr>
+            <tr><td>brand-guidelines</td><td>Anthropic 品牌指南應用</td><td>theme-factory</td></tr>
+            <tr><td>canvas-design</td><td>Canvas/PDF 視覺設計</td><td>algorithmic-art, frontend-design</td></tr>
+            <tr><td>doc-coauthoring</td><td>協作寫作流程指南</td><td>planning-with-files</td></tr>
+            <tr><td>docx</td><td>Word 文件完整處理工具</td><td>pdf, pptx</td></tr>
+            <tr><td>frontend-design</td><td>生產品級前端介面設計</td><td>canvas-design, web-artifacts-builder</td></tr>
+            <tr><td>internal-comms</td><td>內部溝通文件撰寫</td><td>doc-coauthoring, pdf-generator</td></tr>
+            <tr><td>mcp-builder</td><td>MCP 伺服器開發指南</td><td>skill-creator</td></tr>
+            <tr><td>pdf</td><td>PDF 完整操作工具包</td><td>docx, changelog-generator</td></tr>
+            <tr><td>pptx</td><td>PowerPoint 簡報工具</td><td>docx, theme-factory</td></tr>
+            <tr><td>skill-creator</td><td>創建新 Skills 指南</td><td>mcp-builder, plugin-dev</td></tr>
+            <tr><td>slack-gif-creator</td><td>Slack GIF 動畫創建</td><td>theme-factory</td></tr>
+            <tr><td>theme-factory</td><td>主題應用工具包</td><td>brand-guidelines, pptx</td></tr>
+            <tr><td>webapp-testing</td><td>Playwright 網頁測試</td><td>agent-browser, requesting-code-review</td></tr>
+            <tr><td>web-artifacts-builder</td><td>React/Tailwind 工件構建</td><td>frontend-design, theme-factory</td></tr>
+            <tr><td>xlsx</td><td>Excel 試算表處理</td><td>pdf, docx</td></tr>
+            <!-- Claude Plugins -->
+            <tr><td>agent-sdk-dev</td><td>Agent SDK 開發驗證</td><td>skill-creator, plugin-dev</td></tr>
+            <tr><td>code-review</td><td>專業代碼審查</td><td>pr-review-toolkit, code-simplifier</td></tr>
+            <tr><td>code-simplifier</td><td>代碼簡化重構</td><td>code-review, refactoring-specialist</td></tr>
+            <tr><td>commit-commands</td><td>Git 提交命令</td><td>finishing-a-development-branch, hookify</td></tr>
+            <tr><td>feature-dev</td><td>功能開發工作流</td><td>subagent-driven-development, test-driven-development</td></tr>
+            <tr><td>hookify</td><td>Git Hooks 管理</td><td>commit-commands, git-workflow-manager</td></tr>
+            <tr><td>plugin-dev</td><td>插件開發</td><td>skill-creator, agent-sdk-dev</td></tr>
+            <tr><td>pr-review-toolkit</td><td>PR 審查工具包</td><td>code-review, requesting-code-review</td></tr>
+            <tr><td>security-guidance</td><td>安全最佳實踐</td><td>code-review, security-auditor</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+    </div>
+
+    <!-- 頁腳 -->
+    <footer class="footer">
+      <p>Claude Code 完整使用指南 | 建立時間: 2026-01-14</p>
+    </footer>
+  </main>
+
+  <!-- JavaScript Libraries (CDN) -->
+  <!-- jQuery 3.7.1 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <!-- Bootstrap 5.3.3 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- highlight.js 11.11.1 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <!-- Custom JavaScript -->
+  <script src="js/main.js"></script>
+</body>
+</html>
