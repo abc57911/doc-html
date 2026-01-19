@@ -107,8 +107,9 @@ function searchContent(query) {
   $('.detail-section').each(function() {
     var $section = $(this);
     var title = $section.find('h3').text().toLowerCase() || '';
+    var headerDesc = $section.find('.header-desc').text().toLowerCase() || '';
     var content = $section.find('.detail-body').text().toLowerCase() || '';
-    var matches = !query || title.includes(query) || content.includes(query);
+    var matches = !query || title.includes(query) || headerDesc.includes(query) || content.includes(query);
 
     if (matches) {
       $section.show().removeClass('hidden');
