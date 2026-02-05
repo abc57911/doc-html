@@ -820,17 +820,28 @@ body {
 
 .card-header {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: flex-start;
   padding: 16px 20px;
   background-color: var(--bg-tertiary);
   border-bottom: 1px solid var(--border-color);
+  gap: 8px;
 }
 
 .card-title {
   font-size: 1rem;
   font-weight: 600;
   color: var(--text-primary);
+  width: 100%;
+  word-wrap: break-word;
+  word-break: break-word;
+}
+
+.card-header-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
 .card-type {
@@ -841,6 +852,20 @@ body {
   letter-spacing: 0.05em;
   border-radius: var(--radius-sm);
 }
+
+.card-source {
+  padding: 4px 10px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+}
+
+.card-source.anthropic { background-color: rgba(163, 113, 247, 0.15); color: var(--accent-purple); }
+.card-source.superpowers { background-color: rgba(88, 166, 255, 0.15); color: var(--accent-blue); }
+.card-source.plugins { background-color: rgba(63, 185, 80, 0.15); color: var(--accent-green); }
+.card-source.community { background-color: rgba(219, 109, 40, 0.15); color: var(--accent-orange); }
+.card-source.builtin { background-color: rgba(57, 197, 207, 0.15); color: var(--accent-cyan); }
 
 .card-type.agent { background-color: rgba(88, 166, 255, 0.15); color: var(--accent-blue); }
 .card-type.skill { background-color: rgba(163, 113, 247, 0.15); color: var(--accent-purple); }

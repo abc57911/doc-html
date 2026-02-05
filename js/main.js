@@ -77,6 +77,8 @@ function initSearch() {
     var query = $(this).val().toLowerCase().trim();
     searchContent(query);
     updateFilterButtonsState(query);
+    // 搜尋時回到頂端
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, 300));
 }
 
@@ -94,8 +96,9 @@ function searchContent(query) {
     var toolNames = $card.find('.tool-tag').map(function() {
       return $(this).text().toLowerCase();
     }).get().join(' ');
+    var source = $card.find('.card-source').text().toLowerCase() || '';
 
-    var matches = !query || title.includes(query) || description.includes(query) || toolNames.includes(query);
+    var matches = !query || title.includes(query) || description.includes(query) || toolNames.includes(query) || source.includes(query);
 
     if (matches) {
       $card.show().removeClass('hidden').addClass('fade-in');
