@@ -1,6 +1,6 @@
 # AI_ARCH.md - Claude Code 文件網站技術架構文檔
 
-> 本文件概述 `doc-html` 專案的技術架構設計與實作細節
+> 本文件概述 `doc-react` 專案的技術架構設計與實作細節
 
 ---
 
@@ -11,21 +11,20 @@
 本專案為 **Claude Code 完整使用指南** 的靜態文件網站，用於記錄與展示：
 - **Agents**：18 種開發、分析、專家類代理程式
 - **Skills**：37 種工作流程與工具類技能
-- **Tools**：10+ 種核心工具與 MCP (Model Context Protocol) 工具
+- **Tools**：3 種 MCP (Model Context Protocol) 工具服務
 
-屬於**文件型應用**，無後端業務邏輯，所有內容以靜態 HTML 方式呈現。
+屬於**文件型應用**，無後端業務邏輯，前端採用 React + Vite 構建。
 
 ### 1.2 技術棧清單
 
 | 類別 | 版本/規格 | 用途 |
 |------|----------|------|
-| HTML | 5 | 文件結構與語意化標籤 |
-| CSS | 3 (含 Bootstrap 5.3.3) | 響應式排版與自訂樣式 |
-| JavaScript | ES6+ | DOM 操作與互動功能 |
-| jQuery | 3.7.1 | DOM 操控與事件處理 |
-| Bootstrap | 5.3.3 | 網格系統與 UI 元件 |
-| Font Awesome | 6.5.1 | 圖示資源 |
-| highlight.js | - | 程式碼語法高亮 (整合於 JS) |
+| React | 18.2.0 | UI 元件框架 |
+| TypeScript | 5.3+ | 類型安全 |
+| Vite | 5.1+ | 建構工具 |
+| Bootstrap | 5.3.3 | 網格系統與 UI 元件 (npm) |
+| Font Awesome | 6.5.1 | 圖示資源 (CDN) |
+| React Router | 6.22+ | 路由管理 |
 
 ---
 
@@ -33,21 +32,23 @@
 
 ### 2.1 採用的設計模式
 
-本專案採用 **Static Page + Client-Side Rendering (CSR)** 模式：
+本專案採用 **React + Vite + TypeScript** 單頁應用 (SPA) 架構：
 
 ```
 ┌─────────────────────────────────────────────────────────┐
 │                    Browser (Client)                      │
 ├─────────────────────────────────────────────────────────┤
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐      │
-│  │   index.html │  │  css/styles │  │  js/main.js │      │
-│  │  (結構層)    │  │  (表現層)    │  │  (行為層)    │      │
-│  └─────────────┘  └─────────────┘  └─────────────┘      │
-│         │                │                │              │
-│         └────────────────┼────────────────┘              │
-│                          ▼                               │
-│               jQuery + Bootstrap 5                       │
-│                   (互動與響應式)                          │
+│  ┌─────────────────────────────────────────────────┐   │
+│  │                   React App                      │   │
+│  │  ┌──────────┐  ┌──────────┐  ┌──────────┐      │   │
+│  │  │  Hooks   │  │Components│  │  Pages   │      │   │
+│  │  │(邏輯)   │  │  (UI)    │  │(路由)    │      │   │
+│  │  └──────────┘  └──────────┘  └──────────┘      │   │
+│  └─────────────────────┬───────────────────────────┘   │
+│                        │                                 │
+│                        ▼                                 │
+│              Vite + Bootstrap 5                          │
+│                   (構建與樣式)                            │
 └─────────────────────────────────────────────────────────┘
 ```
 
@@ -55,75 +56,87 @@
 
 | 層級 | 職責 | 解耦方式 |
 |-----|------|---------|
-| **結構層 (HTML)** | 語意化文件結構 | data-* 屬性區分功能區塊 |
-| **表現層 (CSS)** | 視覺樣式與主題 | CSS 變數 (`--bg-primary`, `--text-primary`) |
-| **行為層 (JS)** | 互動邏輯 | jQuery 模組化函式 + 事件委派 |
+| **React Components** | UI 邏輯 | Function Components + Hooks |
+| **Custom Hooks** | 共用邏輯 | useSearch, useFilter, useTheme |
+| **Data Layer** | 資料管理 | TypeScript 物件 (無 API) |
+| **CSS** | 視覺樣式 | CSS 變數 + Bootstrap |
 
 ---
 
 ## 3. 目錄結構深度解析 (Directory Structure)
 
 ```
-doc-html/
-├── CLAUDE.md           # Claude Code 專案指示檔
-├── AI_ARCH.md          # 本技術架構文檔
-├── index.html          # 主文件頁面 (入口檔案)
-├── project_map.xml     # Repomix 產生的專案地圖
-├── css/
-│   └── styles.css      # 自訂樣式表 (含 Bootstrap 覆寫)
-└── js/
-    └── main.js         # jQuery 互動功能模組
+doc-react/
+├── CLAUDE.md              # Claude Code 專案指示檔
+├── AI_ARCH.md             # 本技術架構文檔
+├── index.html             # Vite 入口 HTML
+├── package.json           # 依賴與腳本
+├── tsconfig.json          # TypeScript 配置
+├── vite.config.ts         # Vite 配置
+└── src/
+    ├── main.tsx           # React 入口
+    ├── App.tsx            # App 根元件
+    ├── App.css            # 全域樣式
+    ├── components/        # React 元件
+    │   ├── Header.tsx
+    │   ├── Sidebar.tsx
+    │   ├── Card.tsx
+    │   ├── DetailSection.tsx
+    │   ├── WorkflowDiagram.tsx
+    │   ├── DataTable.tsx
+    │   ├── ProgressBar.tsx
+    │   └── BackToTop.tsx
+    ├── data/              # 資料層
+    │   ├── types.ts       # TypeScript 類型定義
+    │   ├── agents.ts      # Agents 資料
+    │   ├── skills.ts      # Skills 資料
+    │   └── tools.ts       # Tools 資料
+    ├── hooks/             # Custom Hooks
+    │   ├── useTheme.ts    # 主題切換
+    │   └── useScrollSpy.ts# 捲動監控
+    └── pages/
+        └── Home.tsx       # 主頁面
 ```
 
 ### 3.1 邏輯重鎮標註
 
 | 檔案/目錄 | 設計意圖 | 開發者關注度 |
 |----------|---------|------------|
-| `index.html` | 主文件入口，包含所有內容區塊與導航結構 | ★★★★★ |
-| `js/main.js` | 所有前端互動邏輯 (搜尋、篩選、主題切換) | ★★★★★ |
-| `css/styles.css` | CSS 變數定義、主題系統、響應式斷點 | ★★★★☆ |
+| `src/pages/Home.tsx` | 主頁面組裝與狀態管理 | ★★★★★ |
+| `src/components/*` | UI 元件 | ★★★★☆ |
+| `src/data/*` | 資料定義 | ★★★★☆ |
+| `src/hooks/*` | 共用邏輯 | ★★★☆☆ |
 
 ---
 
 ## 4. 核心資料流與生命週期 (Data Flow & Lifecycle)
 
-### 4.1 頁面載入流程
+### 4.1 React 生命週期
 
 ```
-DOMContentLoaded 事件
+ReactDOM.createRoot()
         │
         ▼
 ┌───────────────────┐
-│  initProgressBar  │  建立捲動進度條
+│  App Component    │  根元件渲染
 └─────────┬─────────┘
           │
           ▼
 ┌───────────────────┐
-│   initBackToTop   │  建立回頂部按鈕
+│  Home Component   │  主頁面載入
 └─────────┬─────────┘
           │
           ▼
-┌───────────────────┐
-│    initSearch     │  初始化搜尋 (含 300ms debounce)
-└─────────┬─────────┘
+    useState / useMemo 初始化
+    (搜尋、過濾、主題狀態)
           │
           ▼
-┌───────────────────┐
-│  initFilterButtons│  初始化分類篩選
-└─────────┬─────────┘
+    Components Render
+    (Header, Sidebar, Cards...)
           │
           ▼
-┌───────────────────┐
-│  initDetailSections│ 建立展開收合功能
-└─────────┬─────────┘
-          │
-          ▼
-┌───────────────────┐
-│   initThemeToggle │  載入 localStorage 主題
-└─────────┬─────────┘
-          │
-          ▼
-    初始化完成 (22 個模組)
+    useEffect 執行
+    (主題載入、scroll spy 初始化)
 ```
 
 ### 4.2 搜尋功能資料流
@@ -132,18 +145,16 @@ DOMContentLoaded 事件
 User Input (搜尋框)
         │
         ▼
-input 事件觸發 ──debounce(300ms)──▶ searchContent(query)
-                                              │
-        ┌───────────────────────────────────┬──┴─────────────┐
-        ▼                                   ▼                ▼
-   card 元素遍歷                  detail-section 遍歷    filterSections()
-        │                                   │                │
-        ▼                                   ▼                ▼
-   標題/描述/tool-tag 比對         標題/內容比對         隱藏空區塊
-        │                                   │                │
-        └──────────────┬────────────────────┘                │
-                       ▼                                     ▼
-              DOM 顯示/隱藏操作                    updateEmptyState()
+onChange ──useState──▶ searchQuery
+                              │
+                              ▼
+                        useMemo (debounce)
+                              │
+                              ▼
+                   filteredAgents / filteredSkills
+                              │
+                              ▼
+                    React Render 更新
 ```
 
 ---
@@ -174,33 +185,40 @@ input 事件觸發 ──debounce(300ms)──▶ searchContent(query)
 }
 ```
 
-```javascript
-// 主題切換邏輯
-var savedTheme = localStorage.getItem('theme') || 'dark';
-$('html').attr('data-theme', savedTheme);
+```typescript
+// 主題切換 Hook (useTheme.ts)
+const [theme, setTheme] = useState(() =>
+  localStorage.getItem('theme') || 'dark'
+);
+
+useEffect(() => {
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('theme', theme);
+}, [theme]);
 ```
 
 ---
 
 ## 6. 關鍵模組與第三方整合 (Key Modules & Integrations)
 
-### 6.1 核心模組清單
+### 6.1 核心元件與 Hooks
 
-| 模組名稱 | 行號 | 功能描述 |
-|---------|------|---------|
-| `initSearch()` | 72-80 | 搜尋功能 (含 debounce 防抖) |
-| `filterContent()` | 159-217 | 分類篩選邏輯 |
-| `initThemeToggle()` | 262-279 | 深色/淺色主題切換 |
-| `initScrollSpy()` | 353-372 | IntersectionObserver 捲動監控 |
-| `initSidebarNavigation()` | 409-455 | 側邊欄導航與錨點捲動 |
-| `updateStats()` | 526-536 | 統計數量更新 |
+| 元件/Hook | 檔案 | 功能描述 |
+|----------|------|---------|
+| `Home.tsx` | src/pages/ | 主頁面組裝與狀態管理 |
+| `useTheme.ts` | src/hooks/ | 深色/淺色主題切換 |
+| `useScrollSpy.ts` | src/hooks/ | IntersectionObserver 捲動監控 |
+| `Header.tsx` | src/components/ | 搜尋框與篩選按鈕 |
+| `Sidebar.tsx` | src/components/ | 側邊欄導航 |
+| `Card.tsx` | src/components/ | Agent/Skill 卡片 |
+| `DetailSection.tsx` | src/components/ | Tool 展開收合 |
 
-### 6.2 第三方整合點
+### 6.2 第三方整合
 
-| 服務 | CDN URL | 用途 |
-|-----|---------|------|
-| Bootstrap 5.3.3 | `cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css` | 網格系統與元件 |
-| Font Awesome 6.5.1 | `cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css` | 圖示資源 |
+| 服務 | 來源 | 用途 |
+|-----|------|------|
+| Bootstrap 5.3.3 | npm | 網格系統與 UI 元件 |
+| Font Awesome 6.5.1 | CDN | 圖示資源 |
 
 ---
 
@@ -263,26 +281,37 @@ navigator.clipboard.writeText(text).catch(function() {
 
 | 部署類型 | 說明 |
 |---------|------|
-| **靜態托管** | 可部署至 GitHub Pages、Netlify、Vercel 等靜態托管服務 |
-| **無建置流程** | 直接複製 `index.html`, `css/`, `js/` 即可執行 |
+| **靜態托管** | Vite build 產出 `dist/` 目錄，可部署至 GitHub Pages、Netlify、Vercel |
+| **本地開發** | `npm run dev` 啟動開發伺服器 |
 
-### 9.2 關鍵配置要點
+### 9.2 建置指令
+
+```bash
+npm run dev      # 開發伺服器 (http://localhost:3000)
+npm run build    # 生產建置 → dist/
+npm run preview  # 預覽建置結果
+```
+
+### 9.3 部署配置
 
 ```nginx
-# Nginx 靜態資源配置 (範例)
+# Nginx 配置 (範例)
 location / {
-    root /var/www/doc-html;
+    root /var/www/doc-react;
     index index.html;
     try_files $uri $uri/ /index.html;
 }
 ```
 
-### 9.3 開發工作流
+### 9.4 開發工作流
 
 ```bash
 # 本地開發
-# 1. 直接開啟 index.html 或使用 Live Server
-open index.html
+cd doc-react
+npm run dev
+
+# 建置生產版本
+npm run build
 
 # Git 提交
 git add -A && git commit -m "更新說明"
@@ -296,8 +325,8 @@ git push origin master
 | 擴充方向 | 建議實作方式 |
 |---------|-------------|
 | **內容管理** | 引入 Markdown 編譯器 (marked.js) 動態載入內容 |
-| **搜尋引擎** | 整合 Algolia DocSearch 或 Lunr.js |
-| **PWA 支援** | Service Worker 快取離線存取 |
+| **搜尋引擎** | 整合 Algolia DocSearch 或 Fuse.js |
+| **PWA 支援** | Vite PWA 插件離線存取 |
 | **多語系** | i18n 框架 (i18next) 支援多語言切換 |
 
 ---
@@ -312,5 +341,15 @@ git push origin master
 
 ---
 
-*文檔版本：v1.0*
-*最後更新：2026-02-02*
+## 附錄：建置產出
+
+| 檔案 | 大小 | 說明 |
+|-----|------|------|
+| `dist/index.html` | ~0.6 kB | 入口 HTML |
+| `dist/assets/*.js` | ~175 kB | React 打包後 JS |
+| `dist/assets/*.css` | ~246 kB | Bootstrap + 自訂樣式 |
+
+---
+
+*文檔版本：v3.0*
+*最後更新：2026-02-06*
