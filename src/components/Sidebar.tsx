@@ -36,15 +36,6 @@ export function Sidebar({ activeSection, onNavigate }: SidebarProps) {
       items: [
         { id: 'mcp-tools', label: 'MCP Tools' }
       ]
-    },
-    {
-      title: '參考',
-      filter: 'all',
-      items: [
-        { id: 'workflow-examples', label: '工作流程範例' },
-        { id: 'agents-table', label: 'Agents 對照表' },
-        { id: 'skills-table', label: 'Skills 對照表' }
-      ]
     }
   ];
 

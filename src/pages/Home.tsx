@@ -5,7 +5,6 @@ import { Sidebar } from '../components/Sidebar';
 import { Card } from '../components/Card';
 import { DetailSection } from '../components/DetailSection';
 import { WorkflowDiagram } from '../components/WorkflowDiagram';
-import { DataTable } from '../components/DataTable';
 import { BackToTop } from '../components/BackToTop';
 import { ProgressBar } from '../components/ProgressBar';
 import { useScrollSpy } from '../hooks/useScrollSpy';
@@ -15,8 +14,6 @@ import {
   allSkills,
   mcpTools,
   workflows,
-  agentsTable,
-  skillsTable,
   claudeCodeSkills,
   agentArchitectureSkills,
   cognitiveArchitectureSkills,
@@ -330,11 +327,6 @@ export function Home() {
                 ))}
               </section>
 
-              {/* Agents 對照表 */}
-              <DataTable title="Agents 對照表" data={agentsTable} />
-
-              {/* Skills 對照表 */}
-              <DataTable title="Skills 對照表" data={skillsTable} />
             </>
           )}
 
