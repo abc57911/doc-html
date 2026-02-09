@@ -286,9 +286,24 @@ export function Home() {
                   <h2>其他 Skills</h2>
                   <span className="count">{claudeMdManagementSkills.length + elementsOfStyleSkills.length + frontendDesignSkills.length} 個</span>
                 </div>
-                {renderCards(claudeMdManagementSkills, 'claude-md')}
-                {renderCards(elementsOfStyleSkills, 'style')}
-                {renderCards(frontendDesignSkills, 'frontend')}
+                {claudeMdManagementSkills.length > 0 && (
+                  <>
+                    <h3 style={{ marginTop: '24px', marginBottom: '16px', color: 'var(--text-secondary)' }}>CLAUDE.md 管理</h3>
+                    {renderCards(claudeMdManagementSkills, 'claude-md')}
+                  </>
+                )}
+                {elementsOfStyleSkills.length > 0 && (
+                  <>
+                    <h3 style={{ marginTop: '24px', marginBottom: '16px', color: 'var(--text-secondary)' }}>寫作風格</h3>
+                    {renderCards(elementsOfStyleSkills, 'style')}
+                  </>
+                )}
+                {frontendDesignSkills.length > 0 && (
+                  <>
+                    <h3 style={{ marginTop: '24px', marginBottom: '16px', color: 'var(--text-secondary)' }}>前端設計</h3>
+                    {renderCards(frontendDesignSkills, 'frontend')}
+                  </>
+                )}
               </section>
 
               {/* MCP Tools */}
