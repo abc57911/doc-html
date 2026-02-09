@@ -9,6 +9,7 @@ import { DataTable } from '../components/DataTable';
 import { BackToTop } from '../components/BackToTop';
 import { ProgressBar } from '../components/ProgressBar';
 import { useScrollSpy } from '../hooks/useScrollSpy';
+import type { CardData } from '../data/types';
 import {
   allAgents,
   allSkills,
@@ -16,13 +17,18 @@ import {
   workflows,
   agentsTable,
   skillsTable,
-  developmentAgents,
-  specialistAgents,
-  analysisAgents,
-  workflowSkills,
-  utilitySkills,
-  anthropicSkills,
-  pluginSkills
+  claudeCodeSkills,
+  agentArchitectureSkills,
+  cognitiveArchitectureSkills,
+  contextEngineeringSkills,
+  documentSkills,
+  notionSkills,
+  ralphLoopSkills,
+  commitCommandsSkills,
+  superpowersSkills,
+  claudeMdManagementSkills,
+  elementsOfStyleSkills,
+  frontendDesignSkills
 } from '../data';
 
 export function Home() {
@@ -52,13 +58,15 @@ export function Home() {
 
   // 側邊欄導航 section IDs
   const sectionIds = useMemo(() => [
-    'development-agents',
-    'specialist-agents',
-    'analysis-agents',
-    'workflow-skills',
-    'utility-skills',
-    'anthropic-agent-skills',
-    'claude-plugins',
+    'claude-agents',
+    'claude-code-skills',
+    'agent-architecture-skills',
+    'document-skills',
+    'notion-skills',
+    'ralph-loop-skills',
+    'commit-commands-skills',
+    'superpowers-skills',
+    'other-skills',
     'mcp-tools',
     'workflow-examples',
     'agents-table',
@@ -72,11 +80,20 @@ export function Home() {
   const showFilteredResults = activeFilter !== 'all';
 
   // 統計
-  const counts = {
+  const counts = useMemo(() => ({
     all: allAgents.length + allSkills.length,
     agent: allAgents.length,
     skill: allSkills.length
-  };
+  }), [allAgents.length, allSkills.length]);
+
+  // 渲染 Card 元件的輔助函數
+  const renderCards = (items: CardData[], sectionId: string) => (
+    <div className="card-grid">
+      {items.map((item, index) => (
+        <Card key={`${sectionId}-${item.id}`} data={item} index={index} />
+      ))}
+    </div>
+  );
 
   return (
     <>
@@ -165,111 +182,123 @@ export function Home() {
           {/* 完整內容顯示 */}
           {!showSearchResults && !showFilteredResults && (
             <>
-              {/* 開發類 Agents */}
-              <section id="development-agents" className="section">
+              {/* Claude Agents */}
+              <section id="claude-agents" className="section">
                 <div className="section-header">
-                  <h2>開發類 Agents</h2>
-                  <span className="count">8 個</span>
-                </div>
-                <div className="card-grid">
-                  {developmentAgents.map((agent, index) => (
-                    <Card key={agent.id} data={agent} index={index} />
-                  ))}
-                </div>
-              </section>
-
-              {/* 專家類 Agents */}
-              <section id="specialist-agents" className="section">
-                <div className="section-header">
-                  <h2>專家類 Agents</h2>
-                  <span className="count">6 個</span>
-                </div>
-                <div className="card-grid">
-                  {specialistAgents.map((agent, index) => (
-                    <Card key={agent.id} data={agent} index={index} />
-                  ))}
-                </div>
-              </section>
-
-              {/* 分析類 Agents */}
-              <section id="analysis-agents" className="section">
-                <div className="section-header">
-                  <h2>分析類 Agents</h2>
-                  <span className="count">4 個</span>
-                </div>
-                <div className="card-grid">
-                  {analysisAgents.map((agent, index) => (
-                    <Card key={agent.id} data={agent} index={index} />
-                  ))}
-                </div>
-              </section>
-
-              {/* 工作流程 Skills */}
-              <section id="workflow-skills" className="section">
-                <div className="section-header">
-                  <h2>工作流程 Skills</h2>
-                  <span className="count">6 個</span>
-                </div>
-                <div className="card-grid">
-                  {workflowSkills.map((skill, index) => (
-                    <Card key={skill.id} data={skill} index={index} />
-                  ))}
-                </div>
-              </section>
-
-              {/* 工具類 Skills */}
-              <section id="utility-skills" className="section">
-                <div className="section-header">
-                  <h2>工具類 Skills</h2>
-                  <span className="count">6 個</span>
-                </div>
-                <div className="card-grid">
-                  {utilitySkills.map((skill, index) => (
-                    <Card key={skill.id} data={skill} index={index} />
-                  ))}
-                </div>
-              </section>
-
-              {/* Anthropic Agent Skills */}
-              <section id="anthropic-agent-skills" className="section">
-                <div className="section-header">
-                  <h2>Anthropic Agent Skills</h2>
-                  <span className="count">16 個</span>
+                  <h2>Claude Code Agents</h2>
+                  <span className="count">{allAgents.length} 個</span>
                 </div>
                 <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>
-                  來自 anthropic-agent-skills 插件市場的專業技能，提供文件處理、視覺設計、生成藝術等功能。
+                  Claude Code 內建的專業 Agents，提供程式碼審查、架構設計、除錯等能力。
                 </p>
-                <div className="card-grid">
-                  {anthropicSkills.map((skill, index) => (
-                    <Card key={skill.id} data={skill} index={index} />
-                  ))}
-                </div>
+                {renderCards(allAgents, 'agents')}
               </section>
 
-              {/* Claude Plugins */}
-              <section id="claude-plugins" className="section">
+              {/* Claude Code Skills */}
+              <section id="claude-code-skills" className="section">
                 <div className="section-header">
-                  <h2>Claude Plugins Official</h2>
-                  <span className="count">9 個</span>
+                  <h2>Claude Code Skills</h2>
+                  <span className="count">{claudeCodeSkills.length} 個</span>
                 </div>
                 <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>
-                  來自 claude-plugins-official 插件市場的開發工具，增強代碼審查、版本控制、功能開發等能力。
+                  Claude Code 提供的核心技能，涵蓋開發工作流程、文件處理、測試等。
                 </p>
-                <div className="card-grid">
-                  {pluginSkills.map((skill, index) => (
-                    <Card key={skill.id} data={skill} index={index} />
-                  ))}
+                {renderCards(claudeCodeSkills, 'claude-code')}
+              </section>
+
+              {/* Agent 架構系列 Skills */}
+              <section id="agent-architecture-skills" className="section">
+                <div className="section-header">
+                  <h2>Agent 架構系列 Skills</h2>
+                  <span className="count">{agentArchitectureSkills.length + cognitiveArchitectureSkills.length + contextEngineeringSkills.length} 個</span>
                 </div>
+                <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>
+                  Agent 架構、開發、評估、認知架構和上下文工程系列技能。
+                </p>
+                {renderCards(agentArchitectureSkills, 'agent-arch')}
+                {renderCards(cognitiveArchitectureSkills, 'cognitive')}
+                {renderCards(contextEngineeringSkills, 'context-eng')}
+              </section>
+
+              {/* 文件處理 Skills */}
+              <section id="document-skills" className="section">
+                <div className="section-header">
+                  <h2>文件處理 Skills</h2>
+                  <span className="count">{documentSkills.length} 個</span>
+                </div>
+                <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>
+                  PDF、Word、Excel、PowerPoint 等文件處理技能。
+                </p>
+                {renderCards(documentSkills, 'document')}
+              </section>
+
+              {/* Notion Skills */}
+              <section id="notion-skills" className="section">
+                <div className="section-header">
+                  <h2>Notion Skills</h2>
+                  <span className="count">{notionSkills.length} 個</span>
+                </div>
+                <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>
+                  Notion 整合技能，用於搜尋、建立和管理 Notion 頁面與資料庫。
+                </p>
+                {renderCards(notionSkills, 'notion')}
+              </section>
+
+              {/* Ralph Loop Skills */}
+              <section id="ralph-loop-skills" className="section">
+                <div className="section-header">
+                  <h2>Ralph Loop Skills</h2>
+                  <span className="count">{ralphLoopSkills.length} 個</span>
+                </div>
+                <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>
+                  Ralph Loop 對話模式控制技能。
+                </p>
+                {renderCards(ralphLoopSkills, 'ralph')}
+              </section>
+
+              {/* Commit Commands Skills */}
+              <section id="commit-commands-skills" className="section">
+                <div className="section-header">
+                  <h2>Commit Commands Skills</h2>
+                  <span className="count">{commitCommandsSkills.length} 個</span>
+                </div>
+                <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>
+                  Git 提交命令技能。
+                </p>
+                {renderCards(commitCommandsSkills, 'commit')}
+              </section>
+
+              {/* Superpowers Skills */}
+              <section id="superpowers-skills" className="section">
+                <div className="section-header">
+                  <h2>Superpowers Skills</h2>
+                  <span className="count">{superpowersSkills.length} 個</span>
+                </div>
+                <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>
+                  Superpowers 開發超能力技能系列。
+                </p>
+                {renderCards(superpowersSkills, 'superpowers')}
+              </section>
+
+              {/* Other Skills */}
+              <section id="other-skills" className="section">
+                <div className="section-header">
+                  <h2>其他 Skills</h2>
+                  <span className="count">{claudeMdManagementSkills.length + elementsOfStyleSkills.length + frontendDesignSkills.length} 個</span>
+                </div>
+                {renderCards(claudeMdManagementSkills, 'claude-md')}
+                {renderCards(elementsOfStyleSkills, 'style')}
+                {renderCards(frontendDesignSkills, 'frontend')}
               </section>
 
               {/* MCP Tools */}
               <section id="mcp-tools" className="section">
                 <div className="section-header">
                   <h2>MCP Tools</h2>
-                  <span className="count">3 個服務</span>
+                  <span className="count">{mcpTools.length} 個服務</span>
                 </div>
                 <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>
-                  MCP (Model Context Protocol) Tools 是透過 MCP 伺服器提供的額外工具，擴展 Claude Code 的能力。
+                  MCP (Model Context Protocol) Tools 是透過 MCP 伺服器提供的額外工具。
                 </p>
                 {mcpTools.map((tool) => (
                   <DetailSection key={tool.id} section={tool} />
@@ -296,7 +325,7 @@ export function Home() {
 
           {/* 頁腳 */}
           <footer className="footer">
-            <p>Claude Code 完整使用指南 | 建立時間: 2026-01-14</p>
+            <p>Claude Code 完整使用指南 | 建立時間: 2026-02-09</p>
           </footer>
         </div>
       </main>

@@ -62,3 +62,78 @@ pages/
 
 - Commit 訊息使用中文
 - 部署 `dist/` 目錄到靜態托管（GitHub Pages、Netlify、Vercel）
+
+---
+
+## 已安裝的 Agents 與 Skills
+
+### Agents（8 個）
+
+| Agent | 用途 |
+|-------|------|
+| `agent-sdk-dev:agent-sdk-verifier-py` | 驗證 Python Agent SDK 應用程式 |
+| `agent-sdk-dev:agent-sdk-verifier-ts` | 驗證 TypeScript Agent SDK 應用程式 |
+| `code-simplifier:code-simplifier` | 程式碼簡化與重構 |
+| `feature-dev:code-architect` | 設計功能架構 |
+| `feature-dev:code-explorer` | 分析功能程式碼 |
+| `feature-dev:code-reviewer` | 程式碼審查 |
+| `pr-review-toolkit:silent-failure-hunter` | 偵測靜默失敗與錯誤處理 |
+| `superpowers:code-reviewer` | 專案程式碼審查 |
+
+### Claude Code Skills（18 個）
+
+| Skill | 用途 |
+|-------|------|
+| `agent-browser` | 瀏覽器自動化測試與互動 |
+| `changelog-generator` | 自動從 git commits 產生 changelog |
+| `executing-plans` | 執行保存的實施計劃 |
+| `find-skills` | 搜尋與安裝新技能 |
+| `finishing-a-development-branch` | 完成開發分支的最終檢查 |
+| `notion-spec-to-implementation` | 將產品規格轉為 Notion 任務 |
+| `pdf-generator` | 專業 PDF 文件生成 |
+| `planning-with-files` | 使用 markdown 文件進行規劃 |
+| `requesting-code-review` | 請求程式碼審查 |
+| `subagent-driven-development` | 子 agent 驅動開發 |
+| `systematic-debugging` | 系統化除錯方法 |
+| `test-driven-development` | TDD 測試驅動開發 |
+| `thinkphp-expert` | ThinkPHP（TP3/TP5）專案輔助 |
+| `using-superpowers` | 超能力技能使用指南 |
+| `vercel-composition-patterns` | React 組合模式 |
+| `vercel-react-best-practices` | React/Next.js 效能優化 |
+| `web-design-guidelines` | Web 介面設計規範 |
+| `writing-plans` | 撰寫實施計劃 |
+
+### Agent 架構系列（5 × 9 = 45 個子技能）
+
+- `agent-architecture:*` - Agent 架構設計
+- `agent-development:*` - Agent 開發指南
+- `agent-evaluation:*` - Agent 效能評估
+- `cognitive-architecture:*` - 認知架構設計
+- `context-engineering-fundamentals:*` - 上下文工程基礎
+
+### 文件處理系列（12 個）
+
+| | | |
+|---|---|---|
+| `document-skills:pdf` | `document-skills:docx` | `document-skills:xlsx` |
+| `document-skills:pptx` | `document-skills:pdf` | `document-skills:docx` |
+| `document-skills:pdf` | `document-skills:pdf` | `document-skills:pdf` |
+
+### 其他 Skills 系列
+
+| 系列 | 數量 | 用途 |
+|------|------|------|
+| `Notion:*` | 5 | Notion 整合 |
+| `ralph-loop:*` | 3 | Ralph Loop 指令 |
+| `commit-commands:*` | 3 | Git commit 指令 |
+| `superpowers:*` | 12 | 開發超能力 |
+| `elements-of-style:*` | 1 | 寫作風格 |
+| `claude-md-management:*` | 2 | CLAUDE.md 管理 |
+| `frontend-design:*` | 1 | 前端設計 |
+
+### MCP Servers（全域）
+
+| Server | 類型 | 用途 |
+|--------|------|------|
+| `MiniMax` | 命令列 | MiniMax AI API 整合 |
+| `notion` | HTTP | Notion API 整合 |
