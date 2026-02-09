@@ -34,7 +34,10 @@ export function useScrollSpy(sectionIds: string[]) {
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      // 計算頂部工具列高度，預留空間讓 section-header 可見
+      const topBarHeight = 80; // 頂部工具列高度 + 間距
+      const y = element.getBoundingClientRect().top + window.scrollY - topBarHeight;
+      window.scrollTo({ top: y, behavior: 'smooth' });
     }
   };
 
