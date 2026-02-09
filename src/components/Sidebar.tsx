@@ -9,34 +9,36 @@ export function Sidebar({ activeSection, onNavigate }: SidebarProps) {
     {
       title: 'Agents',
       filter: 'agent',
-      badge: '18',
+      badge: '8',
       items: [
-        { id: 'development-agents', label: '開發類 Agents' },
-        { id: 'specialist-agents', label: '專家類 Agents' },
-        { id: 'analysis-agents', label: '分析類 Agents' }
+        { id: 'claude-agents', label: 'Claude Code Agents' }
       ]
     },
     {
       title: 'Skills',
       filter: 'skill',
-      badge: '37',
+      badge: '100+',
       items: [
-        { id: 'workflow-skills', label: '工作流程 Skills' },
-        { id: 'utility-skills', label: '工具類 Skills' },
-        { id: 'anthropic-agent-skills', label: 'Anthropic Agent Skills' },
-        { id: 'claude-plugins', label: 'Claude Plugins' }
+        { id: 'claude-code-skills', label: 'Claude Code Skills' },
+        { id: 'agent-architecture-skills', label: 'Agent 架構系列' },
+        { id: 'document-skills', label: '文件處理' },
+        { id: 'notion-skills', label: 'Notion' },
+        { id: 'ralph-loop-skills', label: 'Ralph Loop' },
+        { id: 'commit-commands-skills', label: 'Commit Commands' },
+        { id: 'superpowers-skills', label: 'Superpowers' },
+        { id: 'other-skills', label: '其他' }
       ]
     },
     {
       title: 'Tools',
       filter: 'tool',
-      badge: '3',
+      badge: '2',
       items: [
         { id: 'mcp-tools', label: 'MCP Tools' }
       ]
     },
     {
-      title: '範例',
+      title: '參考',
       filter: 'all',
       items: [
         { id: 'workflow-examples', label: '工作流程範例' },
