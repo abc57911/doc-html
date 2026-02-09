@@ -40,8 +40,3 @@ export interface WorkflowData {
   steps: WorkflowStep[];
 }
 
-export interface TableRow {
-  name: string;
-  description: string;
-  relatedSkills: string;
-}
