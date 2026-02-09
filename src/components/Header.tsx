@@ -1,4 +1,5 @@
 // 頂部工具列元件
+import { useEffect, useRef } from 'react';
 import { useTheme } from '../hooks/useTheme';
 
 interface HeaderProps {
@@ -15,6 +16,24 @@ interface HeaderProps {
 
 export function Header({ searchQuery, onSearchChange, activeFilter, onFilterChange, counts }: HeaderProps) {
   const [theme, toggleTheme] = useTheme();
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  // 按下 / 鍵 focus 搜尋框
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // 如果已經在 input 中則不觸發
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+        return;
+      }
+      if (e.key === '/') {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   return (
     <div className="top-bar">
@@ -24,8 +43,9 @@ export function Header({ searchQuery, onSearchChange, activeFilter, onFilterChan
           <path d="M21 21l-4.35-4.35"></path>
         </svg>
         <input
+          ref={searchInputRef}
           type="text"
-          placeholder="搜尋 agents、skills、tools..."
+          placeholder="搜尋... (按 / 聚焦)"
           value={searchQuery}
           onChange={(e) => onSearchChange(e.target.value)}
         />
