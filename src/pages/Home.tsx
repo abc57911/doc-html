@@ -46,12 +46,12 @@ export function Home() {
   const filteredAgents = useMemo(() => {
     if (!searchFilter) return allAgents;
     return allAgents.filter(searchFilter);
-  }, [allAgents, searchFilter]);
+  }, [searchFilter]);
 
   const filteredSkills = useMemo(() => {
     if (!searchFilter) return allSkills;
     return allSkills.filter(searchFilter);
-  }, [allSkills, searchFilter]);
+  }, [searchFilter]);
 
   // 側邊欄導航 section IDs
   const sectionIds = useMemo(() => [
@@ -81,7 +81,7 @@ export function Home() {
     all: allAgents.length + allSkills.length,
     agent: allAgents.length,
     skill: allSkills.length
-  }), [allAgents.length, allSkills.length]);
+  }), []);
 
   // 渲染 Card 元件的輔助函數
   const renderCards = (items: CardData[], sectionId: string) => (
