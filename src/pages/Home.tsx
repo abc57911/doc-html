@@ -7,8 +7,10 @@ import { DetailSection } from '../components/DetailSection';
 import { WorkflowDiagram } from '../components/WorkflowDiagram';
 import { BackToTop } from '../components/BackToTop';
 import { ProgressBar } from '../components/ProgressBar';
+import { SectionHeader } from '../components/SectionHeader';
 import { useScrollSpy } from '../hooks/useScrollSpy';
 import type { CardData } from '../data/types';
+import { SUBSECTION_TITLE_STYLE } from '../styles/constants';
 import {
   allAgents,
   allSkills,
@@ -181,37 +183,31 @@ export function Home() {
             <>
               {/* Claude Agents */}
               <section id="claude-agents" className="section">
-                <div className="section-header">
-                  <h2>Claude Code Agents</h2>
-                  <span className="count">{allAgents.length} 個</span>
-                </div>
-                <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>
-                  Claude Code 內建的專業 Agents，提供程式碼審查、架構設計、除錯等能力。
-                </p>
+                <SectionHeader
+                  title="Claude Code Agents"
+                  count={allAgents.length}
+                  description="Claude Code 內建的專業 Agents，提供程式碼審查、架構設計、除錯等能力。"
+                />
                 {renderCards(allAgents, 'agents')}
               </section>
 
               {/* Claude Code Skills */}
               <section id="claude-code-skills" className="section">
-                <div className="section-header">
-                  <h2>Claude Code Skills</h2>
-                  <span className="count">{claudeCodeSkills.length} 個</span>
-                </div>
-                <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>
-                  Claude Code 提供的核心技能，涵蓋開發工作流程、文件處理、測試等。
-                </p>
+                <SectionHeader
+                  title="Claude Code Skills"
+                  count={claudeCodeSkills.length}
+                  description="Claude Code 提供的核心技能，涵蓋開發工作流程、文件處理、測試等。"
+                />
                 {renderCards(claudeCodeSkills, 'claude-code')}
               </section>
 
               {/* Agent 架構系列 Skills */}
               <section id="agent-architecture-skills" className="section">
-                <div className="section-header">
-                  <h2>Agent 架構系列 Skills</h2>
-                  <span className="count">{agentArchitectureSkills.length + cognitiveArchitectureSkills.length + contextEngineeringSkills.length} 個</span>
-                </div>
-                <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>
-                  Agent 架構、開發、評估、認知架構和上下文工程系列技能。
-                </p>
+                <SectionHeader
+                  title="Agent 架構系列 Skills"
+                  count={agentArchitectureSkills.length + cognitiveArchitectureSkills.length + contextEngineeringSkills.length}
+                  description="Agent 架構、開發、評估、認知架構和上下文工程系列技能。"
+                />
                 {renderCards(agentArchitectureSkills, 'agent-arch')}
                 {renderCards(cognitiveArchitectureSkills, 'cognitive')}
                 {renderCards(contextEngineeringSkills, 'context-eng')}
@@ -219,85 +215,75 @@ export function Home() {
 
               {/* 文件處理 Skills */}
               <section id="document-skills" className="section">
-                <div className="section-header">
-                  <h2>文件處理 Skills</h2>
-                  <span className="count">{documentSkills.length} 個</span>
-                </div>
-                <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>
-                  PDF、Word、Excel、PowerPoint 等文件處理技能。
-                </p>
+                <SectionHeader
+                  title="文件處理 Skills"
+                  count={documentSkills.length}
+                  description="PDF、Word、Excel、PowerPoint 等文件處理技能。"
+                />
                 {renderCards(documentSkills, 'document')}
               </section>
 
               {/* Notion Skills */}
               <section id="notion-skills" className="section">
-                <div className="section-header">
-                  <h2>Notion Skills</h2>
-                  <span className="count">{notionSkills.length} 個</span>
-                </div>
-                <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>
-                  Notion 整合技能，用於搜尋、建立和管理 Notion 頁面與資料庫。
-                </p>
+                <SectionHeader
+                  title="Notion Skills"
+                  count={notionSkills.length}
+                  description="Notion 整合技能，用於搜尋、建立和管理 Notion 頁面與資料庫。"
+                />
                 {renderCards(notionSkills, 'notion')}
               </section>
 
               {/* Ralph Loop Skills */}
               <section id="ralph-loop-skills" className="section">
-                <div className="section-header">
-                  <h2>Ralph Loop Skills</h2>
-                  <span className="count">{ralphLoopSkills.length} 個</span>
-                </div>
-                <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>
-                  Ralph Loop 對話模式控制技能。
-                </p>
+                <SectionHeader
+                  title="Ralph Loop Skills"
+                  count={ralphLoopSkills.length}
+                  description="Ralph Loop 對話模式控制技能。"
+                />
                 {renderCards(ralphLoopSkills, 'ralph')}
               </section>
 
               {/* Commit Commands Skills */}
               <section id="commit-commands-skills" className="section">
-                <div className="section-header">
-                  <h2>Commit Commands Skills</h2>
-                  <span className="count">{commitCommandsSkills.length} 個</span>
-                </div>
-                <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>
-                  Git 提交命令技能。
-                </p>
+                <SectionHeader
+                  title="Commit Commands Skills"
+                  count={commitCommandsSkills.length}
+                  description="Git 提交命令技能。"
+                />
                 {renderCards(commitCommandsSkills, 'commit')}
               </section>
 
               {/* Superpowers Skills */}
               <section id="superpowers-skills" className="section">
-                <div className="section-header">
-                  <h2>Superpowers Skills</h2>
-                  <span className="count">{superpowersSkills.length} 個</span>
-                </div>
-                <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>
-                  Superpowers 開發超能力技能系列。
-                </p>
+                <SectionHeader
+                  title="Superpowers Skills"
+                  count={superpowersSkills.length}
+                  description="Superpowers 開發超能力技能系列。"
+                />
                 {renderCards(superpowersSkills, 'superpowers')}
               </section>
 
               {/* Other Skills */}
               <section id="other-skills" className="section">
-                <div className="section-header">
-                  <h2>其他 Skills</h2>
-                  <span className="count">{claudeMdManagementSkills.length + elementsOfStyleSkills.length + frontendDesignSkills.length} 個</span>
-                </div>
+                <SectionHeader
+                  title="其他 Skills"
+                  count={claudeMdManagementSkills.length + elementsOfStyleSkills.length + frontendDesignSkills.length}
+                />
                 {claudeMdManagementSkills.length > 0 && (
                   <>
-                    <h3 style={{ marginTop: '24px', marginBottom: '16px', color: 'var(--text-secondary)' }}>CLAUDE.md 管理</h3>
+                    <h3 style={SUBSECTION_TITLE_STYLE}>CLAUDE.md 管理</h3>
                     {renderCards(claudeMdManagementSkills, 'claude-md')}
                   </>
                 )}
                 {elementsOfStyleSkills.length > 0 && (
                   <>
-                    <h3 style={{ marginTop: '24px', marginBottom: '16px', color: 'var(--text-secondary)' }}>寫作風格</h3>
+                    <h3 style={SUBSECTION_TITLE_STYLE}>寫作風格</h3>
                     {renderCards(elementsOfStyleSkills, 'style')}
                   </>
                 )}
                 {frontendDesignSkills.length > 0 && (
                   <>
-                    <h3 style={{ marginTop: '24px', marginBottom: '16px', color: 'var(--text-secondary)' }}>前端設計</h3>
+                    <h3 style={SUBSECTION_TITLE_STYLE}>前端設計</h3>
                     {renderCards(frontendDesignSkills, 'frontend')}
                   </>
                 )}
@@ -305,13 +291,11 @@ export function Home() {
 
               {/* MCP Tools */}
               <section id="mcp-tools" className="section">
-                <div className="section-header">
-                  <h2>MCP Tools</h2>
-                  <span className="count">{mcpTools.length} 個服務</span>
-                </div>
-                <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>
-                  MCP (Model Context Protocol) Tools 是透過 MCP 伺服器提供的額外工具。
-                </p>
+                <SectionHeader
+                  title="MCP Tools"
+                  count={`${mcpTools.length} 個服務`}
+                  description="MCP (Model Context Protocol) Tools 是透過 MCP 伺服器提供的額外工具。"
+                />
                 {mcpTools.map((tool) => (
                   <DetailSection key={tool.id} section={tool} />
                 ))}

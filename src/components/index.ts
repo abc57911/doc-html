@@ -5,3 +5,4 @@ export * from './DetailSection';
 export * from './ProgressBar';
 export * from './BackToTop';
 export * from './WorkflowDiagram';
+export * from './SectionHeader';
