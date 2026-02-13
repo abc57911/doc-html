@@ -4,9 +4,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
+    "build:check": "tsc --noEmit && vite build",
     "preview": "vite preview",
-    "lint": "eslint src --ext .ts,.tsx --max-warnings=0"
+    "lint": "eslint src --ext .ts,.tsx --max-warnings=0",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "bootstrap": "^5.3.3",
