@@ -34,7 +34,7 @@ components/               # UI 元件
 data/                     # 資料定義
 ├── types.ts             # 共用介面
 ├── agents.ts            # Agents 資料（8 個）
-├── skills.ts            # Skills 資料（100+ 個）
+├── skills.ts            # Skills 資料（128 個）
 └── tools.ts             # MCP Tools 資料
 
 hooks/
@@ -48,8 +48,8 @@ pages/
 ## 資料統計
 
 - **Agents**：8 個
-- **Skills**：100+ 個
-- **MCP Servers**：2 個（MiniMax、Notion）
+- **Skills**：128 個
+- **MCP Tools**：3 個（Notion、MiniMax、DeepWiki）
 
 ## 部署
 
