@@ -34,8 +34,8 @@
 # - 用於關聯 Issue 或 PR
 # - 例如：Closes #123, Refs #456
 #
-# Nightshift Trailers（可選）：
-# Nightshift-Task: <task-id>
-# Nightshift-Ref: <reference-url>
+# --- 必填 Trailers ---
+Nightshift-Task: <task-id>
+Nightshift-Ref: https://github.com/marcus/nightshift
 
 
