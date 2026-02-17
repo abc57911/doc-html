@@ -1,4 +1,23 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+# 驗證 commit message 包含必要的 Nightshift trailers
+commit_msg_file="$1"
+commit_msg=$(cat "$commit_msg_file")
+
+# 檢查 Nightshift-Task trailer
+if ! echo "$commit_msg" | grep -qi "^Nightshift-Task:"; then
+  echo "Error: commit message must contain Nightshift-Task trailer"
+  echo "Example: Nightshift-Task: <task-id>"
+  exit 1
+fi
+
+# 檢查 Nightshift-Ref trailer
+if ! echo "$commit_msg" | grep -qi "^Nightshift-Ref:"; then
+  echo "Error: commit message must contain Nightshift-Ref trailer"
+  echo "Example: Nightshift-Ref: https://github.com/marcus/nightshift"
+  exit 1
+fi
+
+# 執行 commitlint 驗證
 npx --no -- commitlint --edit ${1}
