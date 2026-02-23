@@ -1,0 +1,13 @@
+# Nightshift 專案配置
+
+tasks:
+  enabled:
+    - lint-fix
+    - docs-backfill
+    - bug-finder
+    - build-optimize
+    - auto-dry
+  priorities:
+    lint-fix: 1
+    bug-finder: 2
+    docs-backfill: 3
