@@ -32,3 +32,5 @@ pnpm-debug.log*
 
 # Vite
 .vite/
+# Nightshift plan artifacts (keep out of version control)
+.nightshift-plan

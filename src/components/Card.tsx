@@ -1,5 +1,7 @@
 // 卡片元件
 import { CardData } from '../data/types';
+import { getSourceClass } from '../utils/category';
+import { CARD_ANIMATION_DELAY_BASE, CARD_ANIMATION_MAX_ITEMS } from '../styles/constants';
 
 interface CardProps {
   data: CardData;
@@ -7,22 +9,11 @@ interface CardProps {
 }
 
 export function Card({ data, index = 0 }: CardProps) {
-  const getSourceClass = (source?: string) => {
-    switch (source) {
-      case 'Anthropic': return 'anthropic';
-      case 'Superpowers': return 'superpowers';
-      case 'Plugins': return 'plugins';
-      case 'Community': return 'community';
-      case 'Claude Code': return 'builtin';
-      default: return '';
-    }
-  };
-
   return (
     <div
       className="card"
       data-type={data.category}
-      style={{ animationDelay: `${Math.min(index, 12) * 0.05}s` }}
+      style={{ animationDelay: `${Math.min(index, CARD_ANIMATION_MAX_ITEMS) * CARD_ANIMATION_DELAY_BASE}s` }}
     >
       <div className="card-header">
         <span className="card-title">{data.title}</span>

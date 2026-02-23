@@ -61,6 +61,17 @@ export const mcpTools: MCPSection[] = [
       { id: 'web_search', title: 'web_search', description: '網頁搜尋，類似 Google 搜尋' },
       { id: 'understand_image', title: 'understand_image', description: '使用 LLM 分析和理解圖片內容' }
     ]
+  },
+  {
+    id: 'deepwiki-tools',
+    title: 'DeepWiki Tools',
+    description: 'AI 驅動的 GitHub 儲存庫文件查詢工具，可瀏覽結構、閱讀文件或提問。',
+    type: 'mcp',
+    items: [
+      { id: 'read_wiki_structure', title: 'read_wiki_structure', description: '取得 GitHub 儲存庫的文件主題列表' },
+      { id: 'read_wiki_contents', title: 'read_wiki_contents', description: '閱讀 GitHub 儲存庫的完整文件內容' },
+      { id: 'ask_question', title: 'ask_question', description: '針對 GitHub 儲存庫提問，獲得 AI 驅動的回答' }
+    ]
   }
 ];
 

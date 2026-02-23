@@ -1,0 +1,41 @@
+# Commit Message 格式規範
+#
+# <type>(<scope>): <subject>
+# - 或 -
+# <type>: <subject>
+#
+# <body>
+#
+# <footer>
+#
+# Type 類型：
+#   feat     新功能
+#   fix      Bug 修復
+#   docs     文件變更
+#   style    格式調整
+#   refactor 重構
+#   perf     效能優化
+#   test     測試
+#   chore    構建或輔助工具變更
+#   revert   回滾
+#   ci       CI 配置變更
+#
+# Subject 規範：
+# - 使用現在式祈使句
+# - 首字母不大寫
+# - 結尾不加上句號
+# - 長度不超過 72 字元
+#
+# Body 規範：
+# - 說明「做了什麼」和「為什麼做」
+# - 每行不超過 72 字元
+#
+# Footer 規範：
+# - 用於關聯 Issue 或 PR
+# - 例如：Closes #123, Refs #456
+#
+# Nightshift Trailers（可選）：
+# Nightshift-Task: <task-id>
+# Nightshift-Ref: <reference-url>
+
+

@@ -60,6 +60,54 @@ pages/
 
 ## Git
 
+### Commit Message 格式
+
+採用 [Conventional Commits](https://www.conventionalcommits.org/) 格式：
+
+```
+<type>(<scope>): <subject>
+# - 或 -
+<type>: <subject>
+
+<body>
+
+<footer>
+```
+
+**Type 類型：**
+| Type | 說明 |
+|------|------|
+| `feat` | 新功能 |
+| `fix` | Bug 修復 |
+| `docs` | 文件變更 |
+| `style` | 格式調整（不影響程式碼） |
+| `refactor` | 重構 |
+| `perf` | 效能優化 |
+| `test` | 測試 |
+| `chore` | 構建或輔助工具變更 |
+| `revert` | 回滾 |
+| `ci` | CI 配置變更 |
+
+**規範：**
+- Subject 使用現在式祈使句
+- 首字母不大寫，結尾不加上句號
+- Subject 長度不超過 72 字元
+- Header 總長度不超過 100 字元
+
+**Nightshift Trailers（可選）：**
+```
+Nightshift-Task: <task-id>
+Nightshift-Ref: <reference-url>
+```
+
+### 工具
+
+- **commitlint**：驗證 commit 訊息格式
+- **.gitmessage**：commit 訊息範本
+- **commit-msg hook**：自動檢查 commit 訊息
+
+### 部署
+
 - Commit 訊息使用中文
 - 部署 `dist/` 目錄到靜態托管（GitHub Pages、Netlify、Vercel）
 
