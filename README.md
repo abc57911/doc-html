@@ -49,7 +49,7 @@ pages/
 
 - **Agents**：8 個
 - **Skills**：128 個
-- **MCP Tools**：3 個（Notion、MiniMax、DeepWiki）
+- **MCP Servers**：3 個（MiniMax、Notion、DeepWiki）
 
 ## 部署
 
