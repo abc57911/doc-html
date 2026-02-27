@@ -82,8 +82,27 @@ export function Home() {
   const counts = useMemo(() => ({
     all: allAgents.length + allSkills.length,
     agent: allAgents.length,
-    skill: allSkills.length
+    skill: allSkills.length,
+    tool: mcpTools.length
   }), []);
+
+  // 過濾後的 MCP Tools
+  const filteredMcpTools = useMemo(() => {
+    if (!searchFilter) return mcpTools;
+    const lowerQuery = searchQuery.toLowerCase();
+    return mcpTools.filter(tool =>
+      tool.title.toLowerCase().includes(lowerQuery) ||
+      tool.description.toLowerCase().includes(lowerQuery) ||
+      tool.items?.some(item =>
+        item.title.toLowerCase().includes(lowerQuery) ||
+        item.description.toLowerCase().includes(lowerQuery)
+      ) ||
+      tool.subgroups?.some(sg =>
+        sg.title.toLowerCase().includes(lowerQuery) ||
+        sg.items.some(item => item.toLowerCase().includes(lowerQuery))
+      )
+    );
+  }, [searchFilter, searchQuery]);
 
   // 渲染 Card 元件的輔助函數
   const renderCards = (items: CardData[], sectionId: string) => (
@@ -164,7 +183,8 @@ export function Home() {
                 </h2>
                 <span className="count">
                   {activeFilter === 'agent' ? allAgents.length :
-                   activeFilter === 'skill' ? allSkills.length : 0} 個
+                   activeFilter === 'skill' ? allSkills.length :
+                   activeFilter === 'tool' ? mcpTools.length : 0} 個
                 </span>
               </div>
               <div className="card-grid">
@@ -173,6 +193,15 @@ export function Home() {
                 ))}
                 {activeFilter === 'skill' && allSkills.map((skill, index) => (
                   <Card key={skill.id} data={skill} index={index} />
+                ))}
+                {activeFilter === 'tool' && filteredMcpTools.map((tool, index) => (
+                  <Card key={tool.id} data={{
+                    id: tool.id,
+                    title: tool.title,
+                    description: tool.description,
+                    category: 'tool',
+                    tags: ['mcp']
+                  }} index={index} />
                 ))}
               </div>
             </section>
