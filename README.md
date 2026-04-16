@@ -5,9 +5,11 @@
 ## 開發指令
 
 ```bash
-npm run dev      # 開發伺服器 (http://localhost:3000)
-npm run build    # TypeScript 檢查 + 生產建置 → dist/
-npm run preview  # 預覽建置結果
+npm run dev         # 開發伺服器 (http://localhost:3000)
+npm run build       # 生產建置 → dist/（僅 Vite，不含 TypeScript 檢查）
+npm run build:check # TypeScript 檢查 + 生產建置 → dist/
+npm run typecheck   # 僅 TypeScript 類型檢查（支援增量快取）
+npm run preview     # 預覽建置結果
 ```
 
 ## 專案架構
