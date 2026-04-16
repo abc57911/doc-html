@@ -8,7 +8,7 @@
     "build:check": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "lint": "eslint src --ext .ts,.tsx --max-warnings=0",
-    "prepare": "husky install"
+    "prepare": "husky install",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
